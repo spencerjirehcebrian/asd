@@ -30,6 +30,8 @@ export default [
         process: 'readonly',
         fetch: 'readonly',
         React: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
       },
     },
     rules: {

@@ -30,7 +30,12 @@ const iconMap = {
   Network,
 } as const;
 
-export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
+export const ServiceCard: React.FC<ServiceCardProps> = ({ 
+  service, 
+  isHighlighted = false, 
+  isDimmed = false,
+  shouldPulse = false
+}) => {
   const handleClick = (): void => {
     window.open(service.url, '_blank', 'noopener,noreferrer');
   };
@@ -38,9 +43,22 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
   // Get the icon component with fallback
   const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Server;
 
+  // Build dynamic classes based on search state
+  const baseClasses = "group bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/30 rounded-lg cursor-pointer p-4 w-full h-32 md:h-36 min-h-[128px] md:min-h-[144px] transition-all duration-300 ease-out hover:scale-[1.02] hover:bg-zinc-800/50";
+  
+  const searchClasses = isHighlighted 
+    ? "border-emerald-400/60 bg-emerald-900/20 shadow-lg shadow-emerald-500/10" 
+    : isDimmed 
+      ? "opacity-30 scale-95" 
+      : "";
+  
+  const pulseClasses = shouldPulse && isHighlighted 
+    ? "animate-pulse" 
+    : "";
+
   return (
     <div 
-      className="group bg-zinc-900/40 backdrop-blur-sm border border-zinc-800/30 rounded-lg cursor-pointer p-3 w-full h-28 min-h-[112px] transition-all duration-200 ease-out hover:scale-[1.02] hover:bg-zinc-800/50"
+      className={`${baseClasses} ${searchClasses} ${pulseClasses}`}
       onClick={handleClick}
     >
       {/* Content */}
