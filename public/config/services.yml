@@ -1,0 +1,111 @@
+# ASD Services Configuration
+# This file contains all the services displayed in the ASD dashboard
+# Format: YAML for better readability and maintainability
+# Source: https://github.com/spencerjirehcebrian/asd
+
+services:
+  # Development & Version Control
+  - id: github
+    name: GitHub
+    description: Code repositories and version control
+    url: https://github.com
+    icon: Code
+    category: development
+    # Primary code hosting and version control platform
+
+  # CI/CD & Automation
+  - id: jenkins
+    name: Jenkins CI/CD
+    description: Continuous integration and deployment
+    url: https://jenkins.io
+    icon: Terminal
+    category: cicd
+    # Build automation and continuous integration server
+
+  # Monitoring & Observability
+  - id: grafana
+    name: Grafana
+    description: Monitoring dashboards and analytics
+    url: https://grafana.com
+    icon: Monitor
+    category: monitoring
+    # Primary monitoring and visualization platform
+
+  - id: prometheus
+    name: Prometheus
+    description: Metrics collection and alerting
+    url: https://prometheus.io
+    icon: Shield
+    category: monitoring
+    # Time-series database and monitoring system
+
+  # Container Management
+  - id: portainer
+    name: Portainer
+    description: Docker container management
+    url: https://portainer.io
+    icon: Container
+    category: containers
+    # Docker container management interface
+
+  # Database Administration
+  - id: pgadmin
+    name: pgAdmin
+    description: PostgreSQL database administration
+    url: https://www.pgadmin.org
+    icon: Database
+    category: database
+    # PostgreSQL database management tool
+
+  # Media & Entertainment
+  - id: jellyfin
+    name: Jellyfin
+    description: Media server and streaming
+    url: https://jellyfin.org
+    icon: Play
+    category: media
+    # Personal media streaming server
+
+  # File Storage & Collaboration
+  - id: nextcloud
+    name: Nextcloud
+    description: File storage and collaboration
+    url: https://nextcloud.com
+    icon: Folder
+    category: storage
+    # Self-hosted file sync and sharing platform
+
+  # Infrastructure & Networking
+  - id: traefik
+    name: Traefik
+    description: Reverse proxy and load balancer
+    url: https://traefik.io
+    icon: Network
+    category: infrastructure
+    # Modern reverse proxy and load balancer
+
+  - id: nginx
+    name: Nginx
+    description: Web server and reverse proxy
+    url: https://nginx.org
+    icon: Server
+    category: infrastructure
+    # High-performance web server and reverse proxy
+
+  # Object Storage
+  - id: minio
+    name: MinIO
+    description: Object storage server
+    url: https://min.io
+    icon: HardDrive
+    category: storage
+    # High-performance object storage compatible with S3
+
+  # Home Automation
+  - id: homeassistant
+    name: Home Assistant
+    description: Home automation platform
+    url: https://www.home-assistant.io
+    icon: Globe
+    category: automation
+    # Open source home automation platform

@@ -32,6 +32,9 @@ export default [
         React: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        atob: 'readonly',
       },
     },
     rules: {

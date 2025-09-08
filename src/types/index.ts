@@ -1,15 +1,53 @@
-// Core service interface (simplified)
+// Enhanced service interface with optional metadata
 export interface Service {
   id: string;
   name: string;
   description: string;
   url: string;
   icon: string;
+  category?: string;
 }
 
-// Configuration file structure (simplified)
+// Configuration file structure for both JSON and YAML
 export interface ServicesConfig {
   services: Service[];
+}
+
+// GitHub API response types
+export interface GitHubFileResponse {
+  name: string;
+  path: string;
+  sha: string;
+  size: number;
+  url: string;
+  html_url: string;
+  git_url: string;
+  download_url: string;
+  type: string;
+  content: string;
+  encoding: string;
+  _links: {
+    self: string;
+    git: string;
+    html: string;
+  };
+}
+
+// Cache structure for localStorage
+export interface CacheEntry {
+  data: ServicesConfig;
+  timestamp: number;
+  etag?: string;
+  source: 'github_api' | 'local_yaml' | 'local_json';
+  ttl: number;
+}
+
+// Cache manager configuration
+export interface CacheConfig {
+  ttl: number; // Time to live in milliseconds
+  key: string; // localStorage key
+  enableSessionStorage: boolean;
+  enableMemoryCache: boolean;
 }
 
 // Hook return type
