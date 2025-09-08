@@ -1,0 +1,88 @@
+{
+  "services": [
+    {
+      "id": "github",
+      "name": "GitHub",
+      "description": "Code repositories and version control",
+      "url": "https://github.com",
+      "icon": "Code"
+    },
+    {
+      "id": "jenkins",
+      "name": "Jenkins CI/CD",
+      "description": "Continuous integration and deployment",
+      "url": "https://jenkins.io",
+      "icon": "Terminal"
+    },
+    {
+      "id": "grafana",
+      "name": "Grafana",
+      "description": "Monitoring dashboards and analytics",
+      "url": "https://grafana.com",
+      "icon": "Monitor"
+    },
+    {
+      "id": "prometheus",
+      "name": "Prometheus",
+      "description": "Metrics collection and alerting",
+      "url": "https://prometheus.io",
+      "icon": "Shield"
+    },
+    {
+      "id": "portainer",
+      "name": "Portainer",
+      "description": "Docker container management",
+      "url": "https://portainer.io",
+      "icon": "Container"
+    },
+    {
+      "id": "pgadmin",
+      "name": "pgAdmin",
+      "description": "PostgreSQL database administration",
+      "url": "https://www.pgadmin.org",
+      "icon": "Database"
+    },
+    {
+      "id": "jellyfin",
+      "name": "Jellyfin",
+      "description": "Media server and streaming",
+      "url": "https://jellyfin.org",
+      "icon": "Play"
+    },
+    {
+      "id": "nextcloud",
+      "name": "Nextcloud",
+      "description": "File storage and collaboration",
+      "url": "https://nextcloud.com",
+      "icon": "Folder"
+    },
+    {
+      "id": "traefik",
+      "name": "Traefik",
+      "description": "Reverse proxy and load balancer",
+      "url": "https://traefik.io",
+      "icon": "Network"
+    },
+    {
+      "id": "minio",
+      "name": "MinIO",
+      "description": "Object storage server",
+      "url": "https://min.io",
+      "icon": "HardDrive"
+    },
+    {
+      "id": "homeassistant",
+      "name": "Home Assistant",
+      "description": "Home automation platform",
+      "url": "https://www.home-assistant.io",
+      "icon": "Globe"
+    },
+    {
+      "id": "nginx",
+      "name": "Nginx",
+      "description": "Web server and reverse proxy",
+      "url": "https://nginx.org",
+      "icon": "Server"
+    }
+  ]
+}
