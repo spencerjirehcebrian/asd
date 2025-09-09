@@ -4,7 +4,6 @@ export interface Service {
   name: string;
   description: string;
   url: string;
-  icon: string;
   category?: string;
 }
 
@@ -98,17 +97,53 @@ export interface SearchOverlayProps {
   isVisible: boolean;
 }
 
-// Utility types
+// Utility types  
 export type LucideIconName = 
-  | 'Server'
-  | 'Database'
-  | 'Code'
-  | 'Monitor'
-  | 'Container'
-  | 'Folder'
-  | 'Play'
-  | 'Shield'
-  | 'Globe'
-  | 'Terminal'
-  | 'HardDrive'
-  | 'Network';
+  | 'Sun'
+  | 'Moon'
+  | 'Star'
+  | 'Heart'
+  | 'Flower'
+  | 'Coffee'
+  | 'Gem'
+  | 'Leaf'
+  | 'Sparkles'
+  | 'Zap'
+  | 'Cloud'
+  | 'Snowflake'
+  | 'Flame'
+  | 'TreePine'
+  | 'Cherry'
+  | 'Feather'
+  | 'Music'
+  | 'Palette'
+  | 'Camera'
+  | 'Compass'
+  | 'Anchor'
+  | 'Crown'
+  | 'Clover'
+  | 'Flower2'
+  | 'Gift'
+  | 'Lightbulb'
+  | 'Magnet'
+  | 'Rocket'
+  | 'Scissors'
+  | 'Shell'
+  | 'Umbrella'
+  | 'Waves'
+  | 'Wind'
+  | 'Apple'
+  | 'Bird'
+  | 'Fish'
+  | 'Gamepad2'
+  | 'Glasses'
+  | 'Headphones'
+  | 'Key'
+  | 'Laptop'
+  | 'Megaphone'
+  | 'Mountain'
+  | 'Puzzle'
+  | 'Sailboat'
+  | 'Telescope'
+  | 'Trophy'
+  | 'Wand2';

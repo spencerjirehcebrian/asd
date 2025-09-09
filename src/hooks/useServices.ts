@@ -179,7 +179,6 @@ export const useServices = (): UseServicesResult => {
       name: 'Clear Cache',
       description: 'Clear cache and refresh services',
       url: '#',
-      icon: 'HardDrive' as const,
       category: 'system'
     }
   ], [services]);

@@ -1,34 +1,6 @@
-import { 
-  Server,
-  Database,
-  Code,
-  Monitor,
-  Container,
-  Folder,
-  Play,
-  Shield,
-  Globe,
-  Terminal,
-  HardDrive,
-  Network,
-} from 'lucide-react';
 import { ServiceCardProps } from '../../types';
+import { getRandomIconForService } from '../../utils/iconUtils';
 
-// Icon mapping for type safety
-const iconMap = {
-  Server,
-  Database,
-  Code,
-  Monitor,
-  Container,
-  Folder,
-  Play,
-  Shield,
-  Globe,
-  Terminal,
-  HardDrive,
-  Network,
-} as const;
 
 export const ServiceCard: React.FC<ServiceCardProps> = ({ 
   service, 
@@ -51,8 +23,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
     window.open(service.url, '_blank', 'noopener,noreferrer');
   };
 
-  // Get the icon component with fallback
-  const IconComponent = iconMap[service.icon as keyof typeof iconMap] || Server;
+  // Get the randomized aesthetic icon for this service
+  const IconComponent = getRandomIconForService(service.id);
 
   // Build dynamic classes based on search state
   const baseClasses = "group glass-luxury cursor-pointer p-6 w-full h-40 md:h-44 min-h-[160px] md:min-h-[176px] rounded-xl card-zen-hover inner-shimmer";
