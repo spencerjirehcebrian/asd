@@ -178,7 +178,7 @@ export const useServices = (): UseServicesResult => {
       id: '__cache_management__',
       name: 'Clear Cache',
       description: 'Clear cache and refresh services',
-      url: '#',
+      url: '',
       category: 'system'
     }
   ], [services]);

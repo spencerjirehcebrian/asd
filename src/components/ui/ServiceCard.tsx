@@ -20,7 +20,10 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
       return;
     }
     
-    window.open(service.url, '_blank', 'noopener,noreferrer');
+    // Only open URL if it exists and is not empty
+    if (service.url && service.url.trim() !== '') {
+      window.open(service.url, '_blank', 'noopener,noreferrer');
+    }
   };
 
   // Get the randomized aesthetic icon for this service
