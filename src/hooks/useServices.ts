@@ -6,6 +6,7 @@ import { githubApi } from '../utils/githubApi';
 
 export const useServices = (): UseServicesResult => {
   const [services, setServices] = useState<Service[]>([]);
+  const [title, setTitle] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -86,6 +87,7 @@ export const useServices = (): UseServicesResult => {
       const cachedData = cacheManager.get();
       if (cachedData) {
         setServices(cachedData.data.services);
+        setTitle(cachedData.data.title);
         setLoading(false);
         
         // If cache is near expiry, refresh in background
@@ -94,6 +96,7 @@ export const useServices = (): UseServicesResult => {
             const refreshedData = await loadFromGitHub(cachedData.etag);
             if (refreshedData) {
               setServices(refreshedData.services);
+              setTitle(refreshedData.title);
             }
           } catch (err) {
             console.warn('Background refresh failed:', err);
@@ -108,6 +111,7 @@ export const useServices = (): UseServicesResult => {
         const githubData = await loadFromGitHub();
         if (githubData) {
           setServices(githubData.services);
+          setTitle(githubData.title);
           setLoading(false);
           return;
         }
@@ -119,6 +123,7 @@ export const useServices = (): UseServicesResult => {
       try {
         const yamlData = await loadFromLocalYaml();
         setServices(yamlData.services);
+        setTitle(yamlData.title);
         setLoading(false);
         return;
       } catch (yamlError) {
@@ -129,6 +134,7 @@ export const useServices = (): UseServicesResult => {
       try {
         const jsonData = await loadFromLocalJson();
         setServices(jsonData.services);
+        setTitle(jsonData.title);
         setLoading(false);
         return;
       } catch (jsonError) {
@@ -165,5 +171,5 @@ export const useServices = (): UseServicesResult => {
     }
   }, [refresh]);
 
-  return { services, loading, error };
+  return { services, title, loading, error };
 };

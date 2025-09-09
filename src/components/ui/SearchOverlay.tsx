@@ -46,7 +46,7 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ searchTerm, isVisi
         shouldFade ? 'opacity-0' : 'opacity-100'
       }`}>
         <span 
-          className={`text-6xl font-light tracking-wider transition-opacity duration-[10000ms] ease-out ${
+          className={`text-6xl font-normal tracking-wider transition-opacity duration-[10000ms] ease-out ${
             shouldFade ? 'opacity-0' : 'opacity-90'
           }`}
         >

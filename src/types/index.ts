@@ -10,6 +10,7 @@ export interface Service {
 
 // Configuration file structure for both JSON and YAML
 export interface ServicesConfig {
+  title?: string;
   services: Service[];
 }
 
@@ -53,6 +54,7 @@ export interface CacheConfig {
 // Hook return type
 export interface UseServicesResult {
   services: Service[];
+  title?: string;
   loading: boolean;
   error: string | null;
 }

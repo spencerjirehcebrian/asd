@@ -3,9 +3,10 @@ import { useKeyboardSearch } from './hooks/useKeyboardSearch';
 import { ServiceGrid } from './components/ui/ServiceGrid';
 import { SearchOverlay } from './components/ui/SearchOverlay';
 import { LoadingSpinner } from './components/common/LoadingSpinner';
+import { Header } from './components/ui/Header';
 
 const App: React.FC = () => {
-  const { services, loading, error } = useServices();
+  const { services, title, loading, error } = useServices();
   const { searchState } = useKeyboardSearch(services);
 
   if (loading) {
@@ -47,6 +48,8 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-zinc-950 relative">
+      <Header title={title} />
+      
       <main className="w-full">
         <ServiceGrid services={services} searchState={searchState} />
       </main>

@@ -3,6 +3,9 @@
 # Format: YAML for better readability and maintainability
 # Source: https://github.com/spencerjirehcebrian/asd
 
+# Dashboard Configuration
+title: "ASD"
+
 services:
   # Development & Version Control
   - id: github
