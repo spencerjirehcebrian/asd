@@ -64,9 +64,11 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
         </h3>
         
         {/* Description */}
-        <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300 line-clamp-2 flex-grow leading-relaxed">
-          {service.description}
-        </p>
+        <div className="flex-grow">
+          <p className="text-sm text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300 leading-relaxed line-clamp-2">
+            {service.description}
+          </p>
+        </div>
       </div>
     </div>
   );
