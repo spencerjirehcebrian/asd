@@ -38,8 +38,7 @@
   }
 
   .card-zen-hover:hover {
-    @apply border-zinc-700/60;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.02);
+    @apply border-yellow-500/40;
   }
 
   .inner-shimmer {
@@ -51,21 +50,21 @@
     content: '';
     position: absolute;
     top: -50%;
-    left: -150%;
-    width: 200%;
-    height: 200%;
+    left: -50%;
+    width: 150%;
+    height: 150%;
     background: linear-gradient(
-      45deg,
-      transparent,
-      rgba(255, 255, 255, 0.04),
-      transparent
+      135deg,
+      transparent 20%,
+      rgba(212, 175, 55, 0.1) 50%,
+      transparent 80%
     );
-    transition: transform 0.6s ease-out;
-    transform: translateX(-100%) translateY(100%);
+    transition: transform 0.8s ease-in-out;
+    transform: translateX(-100%) translateY(-100%);
   }
 
   .inner-shimmer:hover::before {
-    transform: translateX(100%) translateY(-100%);
+    transform: translateX(100%) translateY(100%);
   }
 
   .content-float {
@@ -87,13 +86,9 @@
     background-clip: text;
   }
 
-  .gold-glow {
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-  }
-
   .gold-highlight {
-    @apply border-yellow-500/60 bg-yellow-900/20;
-    box-shadow: 0 0 24px rgba(212, 175, 55, 0.2), 0 0 0 1px rgba(212, 175, 55, 0.3);
+    @apply border-yellow-500/60;
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3);
   }
 }
 
