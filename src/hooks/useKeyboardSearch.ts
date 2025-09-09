@@ -56,10 +56,13 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
   const filterServices = useCallback((term: string) => {
     if (!term) return services;
     
-    return services.filter(service =>
-      service.name.toLowerCase().includes(term.toLowerCase()) ||
-      service.description.toLowerCase().includes(term.toLowerCase())
-    );
+    const filtered = services.filter(service => {
+      const nameMatch = service.name.toLowerCase().includes(term.toLowerCase());
+      const descMatch = service.description.toLowerCase().includes(term.toLowerCase());
+      return nameMatch || descMatch;
+    });
+    
+    return filtered;
   }, [services]);
 
   const navigateToFocusedService = useCallback(() => {
