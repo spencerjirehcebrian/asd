@@ -65,6 +65,8 @@ export interface SearchState {
   filteredServices: Service[];
   isSearching: boolean;
   shouldPulseHighlighted: boolean;
+  focusedIndex: number;
+  focusedService: Service | null;
 }
 
 export interface UseKeyboardSearchResult {
@@ -80,6 +82,7 @@ export interface ServiceCardProps {
   isHighlighted?: boolean;
   isDimmed?: boolean;
   shouldPulse?: boolean;
+  isFocused?: boolean;
 }
 
 export interface ServiceGridProps {

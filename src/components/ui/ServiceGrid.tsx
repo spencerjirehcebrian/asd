@@ -5,6 +5,7 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState 
   const servicesToDisplay = searchState?.filteredServices || services;
   const isSearching = searchState?.isSearching || false;
   const shouldPulseHighlighted = searchState?.shouldPulseHighlighted || false;
+  const focusedService = searchState?.focusedService;
 
   return (
     <div className="flex justify-center min-h-screen py-8 overflow-y-auto">
@@ -14,6 +15,7 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState 
             const isHighlighted = isSearching && servicesToDisplay.includes(service);
             const isDimmed = isSearching && !servicesToDisplay.includes(service);
             const shouldPulse = shouldPulseHighlighted && isHighlighted;
+            const isFocused = focusedService?.id === service.id;
             
             return (
               <ServiceCard 
@@ -22,6 +24,7 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState 
                 isHighlighted={isHighlighted}
                 isDimmed={isDimmed}
                 shouldPulse={shouldPulse}
+                isFocused={isFocused}
               />
             );
           })}

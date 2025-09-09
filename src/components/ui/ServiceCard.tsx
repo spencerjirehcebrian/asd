@@ -34,7 +34,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   service, 
   isHighlighted = false, 
   isDimmed = false,
-  shouldPulse = false
+  shouldPulse = false,
+  isFocused = false
 }) => {
   const handleClick = (): void => {
     window.open(service.url, '_blank', 'noopener,noreferrer');
@@ -55,11 +56,16 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   const pulseClasses = shouldPulse && isHighlighted 
     ? "animate-pulse" 
     : "";
+  
+  const focusClasses = isFocused 
+    ? "keyboard-focused" 
+    : "";
 
   return (
     <div 
-      className={`${baseClasses} ${searchClasses} ${pulseClasses}`}
+      className={`${baseClasses} ${searchClasses} ${pulseClasses} ${focusClasses}`}
       onClick={handleClick}
+      tabIndex={-1}
     >
       {/* Content */}
       <div className="flex flex-col h-full content-float">
