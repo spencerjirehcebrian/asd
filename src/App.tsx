@@ -35,7 +35,7 @@ const App: React.FC = () => {
             <p className="mb-4 text-zinc-400">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="rounded-lg bg-emerald-500 px-4 py-2 text-white transition-colors duration-200 hover:bg-emerald-600"
+              className="rounded-lg bg-yellow-600 px-4 py-2 text-black font-semibold transition-all duration-300 hover:bg-yellow-500 hover:shadow-lg hover:shadow-yellow-600/20"
             >
               Retry
             </button>

@@ -7,9 +7,9 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState 
   const shouldPulseHighlighted = searchState?.shouldPulseHighlighted || false;
 
   return (
-    <div className="flex justify-center min-h-screen py-8">
-      <div className="w-full max-w-7xl px-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 lg:gap-8 justify-items-center">
+    <div className="flex justify-center min-h-screen py-8 overflow-y-auto">
+      <div className="w-full max-w-7xl px-12 py-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 lg:gap-4 justify-items-center">
           {services.map((service) => {
             const isHighlighted = isSearching && servicesToDisplay.includes(service);
             const isDimmed = isSearching && !servicesToDisplay.includes(service);

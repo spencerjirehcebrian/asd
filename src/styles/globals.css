@@ -11,6 +11,7 @@
     background-color: #0a0a0a;
     color: #f5f5f5;
     min-height: 100vh;
+    scroll-behavior: smooth;
   }
 
   #root {
@@ -23,12 +24,76 @@
     @apply bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50;
   }
 
+  .glass-luxury {
+    @apply bg-zinc-900/60 backdrop-blur-md border border-zinc-800/40;
+  }
+
   .card-hover {
     @apply transition-all duration-300 ease-out hover:scale-105;
   }
 
+  .card-zen-hover {
+    @apply transition-all duration-300 ease-out;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-zen-hover:hover {
+    @apply border-zinc-700/60;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.02);
+  }
+
+  .inner-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .inner-shimmer::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -150%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent,
+      rgba(255, 255, 255, 0.04),
+      transparent
+    );
+    transition: transform 0.6s ease-out;
+    transform: translateX(-100%) translateY(100%);
+  }
+
+  .inner-shimmer:hover::before {
+    transform: translateX(100%) translateY(-100%);
+  }
+
+  .content-float {
+    transition: transform 0.3s ease-out;
+  }
+
+  .content-float:hover {
+    transform: translateY(-1px);
+  }
+
   .text-gradient {
     @apply bg-gradient-to-r from-zinc-100 to-zinc-300 bg-clip-text text-transparent;
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #B8860B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gold-glow {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+  }
+
+  .gold-highlight {
+    @apply border-yellow-500/60 bg-yellow-900/20;
+    box-shadow: 0 0 24px rgba(212, 175, 55, 0.2), 0 0 0 1px rgba(212, 175, 55, 0.3);
   }
 }
 

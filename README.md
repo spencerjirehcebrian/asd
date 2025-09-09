@@ -1,6 +1,6 @@
 # ASD - Server Hub
 
-A simple personal dashboard for accessing your self-hosted services. Built with React and TypeScript for reliability and ease of maintenance.
+A simple personal dashboard for accessing links and services. Built with React and TypeScript for reliability and ease of maintenance.
 
 ## Features
 
