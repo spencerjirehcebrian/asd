@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Service, SearchState, UseKeyboardSearchResult } from '../types';
 import { 
   calculateGridDimensions, 
@@ -110,6 +110,16 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
   }, [searchState.filteredServices, services, pulseTimeoutId]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    // Never intercept when modifier keys are pressed (except Shift for Tab navigation)
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    
+    // Never intercept function keys, navigation keys that should work globally
+    if (['F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12', 'Insert', 'Home', 'End', 'PageUp', 'PageDown'].includes(event.key)) {
+      return;
+    }
+
     // Prevent default behavior for navigation keys when targeting body
     if (event.target === document.body) {
       if (['Tab', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(event.key)) {
@@ -131,8 +141,13 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       return;
     }
 
-    // Handle ESC key for search exit and focus clearing
+    // Handle ESC key for search exit and focus clearing (only when no modifiers)
     if (event.key === 'Escape') {
+      // Only handle ESC when no modifier keys are pressed
+      if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      
       // Prevent default ESC behavior
       if (event.target === document.body) {
         event.preventDefault();
@@ -174,8 +189,13 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       return;
     }
 
-    // Handle Backspace and Delete keys
+    // Handle Backspace and Delete keys (only when searching and no modifiers)
     if ((event.key === 'Backspace' || event.key === 'Delete') && searchState.isSearching) {
+      // Only handle when no modifier keys are pressed (allow Ctrl+Backspace, etc.)
+      if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
+        return;
+      }
+      
       // Prevent default behavior
       if (event.target === document.body) {
         event.preventDefault();
@@ -225,8 +245,14 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       return;
     }
 
-    // Only handle letter keys and space for adding characters
+    // Only handle letter keys and space for adding characters (when no modifiers)
     if (!/^[a-zA-Z\s]$/.test(event.key)) {
+      return;
+    }
+
+    // Already checked for modifiers at the top of function, but double-check for letter keys
+    // This ensures Ctrl+A, Cmd+C, etc. work properly
+    if (event.shiftKey || event.ctrlKey || event.metaKey || event.altKey) {
       return;
     }
 
@@ -265,17 +291,19 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
     });
   }, [searchState.searchTerm, searchState.isSearching, searchState.focusedService, pulseTimeoutId, filterServices, navigateToFirstMatch, navigateToFocusedService, handleTabNavigation, handleArrowNavigation, services]);
 
-  // Update filtered services when services prop changes
+  // Update filtered services when services prop changes (memoized to prevent infinite re-renders)
+  const servicesChanged = useMemo(() => services, [services]);
+  
   useEffect(() => {
     if (!searchState.isSearching) {
       setSearchState(prev => ({
         ...prev,
-        filteredServices: services,
+        filteredServices: servicesChanged,
         focusedIndex: -1,
         focusedService: null,
       }));
     }
-  }, [services, searchState.isSearching]);
+  }, [servicesChanged, searchState.isSearching]);
 
   // Setup global keydown listener
   useEffect(() => {

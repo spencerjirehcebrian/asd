@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import yaml from 'js-yaml';
 import { Service, ServicesConfig, UseServicesResult } from '../types';
 import { cacheManager } from '../utils/cacheManager';
@@ -171,8 +171,8 @@ export const useServices = (): UseServicesResult => {
     }
   }, [refresh]);
 
-  // Add cache management service card at the end
-  const servicesWithCacheManagement = [
+  // Add cache management service card at the end (memoized to prevent infinite re-renders)
+  const servicesWithCacheManagement = useMemo(() => [
     ...services,
     {
       id: '__cache_management__',
@@ -182,7 +182,7 @@ export const useServices = (): UseServicesResult => {
       icon: 'HardDrive' as const,
       category: 'system'
     }
-  ];
+  ], [services]);
 
   return { services: servicesWithCacheManagement, title, loading, error };
 };
