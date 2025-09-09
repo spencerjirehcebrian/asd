@@ -4,99 +4,92 @@
 # Source: https://github.com/spencerjirehcebrian/asd
 
 # Dashboard Configuration
-title: "ASD"
+title: 'ASD'
 
 services:
-  # Development & Version Control
-  - id: github
-    name: GitHub
-    description: Code repositories and version control
-    url: https://github.com
+  # Deployment & Infrastructure
+  - id: coolify
+    name: Coolify
+    description: Self-hosted application deployment platform and Heroku alternative
+    url: https://coolify.spencerjireh.com
+    category: deployment
+    # Self-hosted Heroku alternative for application deployment
+
+  # Productivity & Notes
+  - id: memos
+    name: Memos
+    description: Self-hosted memo and note-taking service
+    url: https://memos.spencerjireh.com
+    category: productivity
+    # Personal memo and note-taking platform
+
+  # Development & Code Management
+  - id: weavyr
+    name: Weavyr
+    description: Code collection service
+    url: https://weavyr.spencerjireh.com
     category: development
-    # Primary code hosting and version control platform
+    # Code snippet and collection management
 
-  # CI/CD & Automation
-  - id: jenkins
-    name: Jenkins CI/CD
-    description: Continuous integration and deployment
-    url: https://jenkins.io
-    category: cicd
-    # Build automation and continuous integration server
+  # Personal & Portfolio
+  - id: portfolio
+    name: Portfolio
+    description: Personal portfolio and showcase website
+    url: https://cebrian.spencerjireh.com
+    category: personal
+    # Personal portfolio and showcase website
 
-  # Monitoring & Observability
-  - id: grafana
-    name: Grafana
-    description: Monitoring dashboards and analytics
-    url: https://grafana.com
+  # Dashboard & Feed
+  - id: glance
+    name: Glance
+    description: Self-hosted feed and homepage service
+    url: https://glance.spencerjireh.com
+    category: dashboard
+    # Self-hosted homepage and feed aggregator
+
+  # Monitoring & Performance
+  - id: glances
+    name: Glances
+    description: System monitoring and performance dashboard
+    url: https://glances.spencerjireh.com
     category: monitoring
-    # Primary monitoring and visualization platform
+    # System performance and resource monitoring
 
-  - id: prometheus
-    name: Prometheus
-    description: Metrics collection and alerting
-    url: https://prometheus.io
-    category: monitoring
-    # Time-series database and monitoring system
+  # Documentation & Wiki
+  - id: docmost
+    name: Docmost
+    description: Self-hosted documentation and wiki platform
+    url: https://docmost.spencerjireh.com
+    category: documentation
+    # Self-hosted documentation and knowledge base
 
-  # Container Management
-  - id: portainer
-    name: Portainer
-    description: Docker container management
-    url: https://portainer.io
-    category: containers
-    # Docker container management interface
+  # AI & Machine Learning
+  - id: ollama/open-webui
+    name: Ollama/Open-WebUI
+    description: Web interface for running local large language models
+    url: https://ollama.spencerjireh.com
+    category: ai
+    # Local LLM hosting and web interface
 
-  # Database Administration
-  - id: pgadmin
-    name: pgAdmin
-    description: PostgreSQL database administration
-    url: https://www.pgadmin.org
+  # Utilities & Tools
+  - id: stirling-pdf
+    name: Stirling-PDF
+    description: Web-based PDF manipulation and processing tool
+    url: https://pdf.spencerjireh.com
+    category: utilities
+    # PDF processing and manipulation tools
+
+  - id: convertx
+    name: ConvertX
+    description: File format conversion service
+    url: https://convertx.spencerjireh.com
+    category: utilities
+    # Multi-format file conversion service
+
+  # Database Management
+  - id: cloudbeaver
+    name: CloudBeaver
+    description: Web-based SQL database management
+    url: https://cloudbeaver.spencerjireh.com
     category: database
-    # PostgreSQL database management tool
-
-  # Media & Entertainment
-  - id: jellyfin
-    name: Jellyfin
-    description: Media server and streaming
-    url: https://jellyfin.org
-    category: media
-    # Personal media streaming server
-
-  # File Storage & Collaboration
-  - id: nextcloud
-    name: Nextcloud
-    description: File storage and collaboration
-    url: https://nextcloud.com
-    category: storage
-    # Self-hosted file sync and sharing platform
-
-  # Infrastructure & Networking
-  - id: traefik
-    name: Traefik
-    description: Reverse proxy and load balancer
-    url: https://traefik.io
-    category: infrastructure
-    # Modern reverse proxy and load balancer
-
-  - id: nginx
-    name: Nginx
-    description: Web server and reverse proxy
-    url: https://nginx.org
-    category: infrastructure
-    # High-performance web server and reverse proxy
-
-  # Object Storage
-  - id: minio
-    name: MinIO
-    description: Object storage server
-    url: https://min.io
-    category: storage
-    # High-performance object storage compatible with S3
-
-  # Home Automation
-  - id: homeassistant
-    name: Home Assistant
-    description: Home automation platform
-    url: https://www.home-assistant.io
-    category: automation
-    # Open source home automation platform
+    # Web-based database administration tool

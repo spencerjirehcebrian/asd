@@ -1,76 +1,70 @@
 {
   "services": [
     {
-      "id": "github",
-      "name": "GitHub",
-      "description": "Code repositories and version control",
-      "url": "https://github.com"
+      "id": "coolify",
+      "name": "Coolify",
+      "description": "Self-hosted application deployment platform and Heroku alternative",
+      "url": "https://coolify.spencerjireh.com"
     },
     {
-      "id": "jenkins",
-      "name": "Jenkins CI/CD",
-      "description": "Continuous integration and deployment",
-      "url": "https://jenkins.io"
+      "id": "memos",
+      "name": "Memos",
+      "description": "Self-hosted memo and note-taking service",
+      "url": "https://memos.spencerjireh.com"
     },
     {
-      "id": "grafana",
-      "name": "Grafana",
-      "description": "Monitoring dashboards and analytics",
-      "url": "https://grafana.com"
+      "id": "weavyr",
+      "name": "Weavyr",
+      "description": "Code collection service",
+      "url": "https://weavyr.spencerjireh.com"
     },
     {
-      "id": "prometheus",
-      "name": "Prometheus",
-      "description": "Metrics collection and alerting",
-      "url": "https://prometheus.io"
+      "id": "portfolio",
+      "name": "Portfolio",
+      "description": "Personal portfolio and showcase website",
+      "url": "https://cebrian.spencerjireh.com"
     },
     {
-      "id": "portainer",
-      "name": "Portainer",
-      "description": "Docker container management",
-      "url": "https://portainer.io"
+      "id": "glance",
+      "name": "Glance",
+      "description": "Self-hosted feed and homepage service",
+      "url": "https://glance.spencerjireh.com"
     },
     {
-      "id": "pgadmin",
-      "name": "pgAdmin",
-      "description": "PostgreSQL database administration",
-      "url": "https://www.pgadmin.org"
+      "id": "glances",
+      "name": "Glances",
+      "description": "System monitoring and performance dashboard",
+      "url": "https://glances.spencerjireh.com"
     },
     {
-      "id": "jellyfin",
-      "name": "Jellyfin",
-      "description": "Media server and streaming",
-      "url": "https://jellyfin.org"
+      "id": "docmost",
+      "name": "Docmost",
+      "description": "Self-hosted documentation and wiki platform",
+      "url": "https://docmost.spencerjireh.com"
     },
     {
-      "id": "nextcloud",
-      "name": "Nextcloud",
-      "description": "File storage and collaboration",
-      "url": "https://nextcloud.com"
+      "id": "ollama/open-webui",
+      "name": "Ollama/Open-WebUI",
+      "description": "Web interface for running local large language models",
+      "url": "https://ollama.spencerjireh.com"
     },
     {
-      "id": "traefik",
-      "name": "Traefik",
-      "description": "Reverse proxy and load balancer",
-      "url": "https://traefik.io"
+      "id": "stirling-pdf",
+      "name": "Stirling-PDF",
+      "description": "Web-based PDF manipulation and processing tool",
+      "url": "https://pdf.spencerjireh.com"
     },
     {
-      "id": "minio",
-      "name": "MinIO",
-      "description": "Object storage server",
-      "url": "https://min.io"
+      "id": "convertx",
+      "name": "ConvertX",
+      "description": "File format conversion service",
+      "url": "https://convertx.spencerjireh.com"
     },
     {
-      "id": "homeassistant",
-      "name": "Home Assistant",
-      "description": "Home automation platform",
-      "url": "https://www.home-assistant.io"
-    },
-    {
-      "id": "nginx",
-      "name": "Nginx",
-      "description": "Web server and reverse proxy",
-      "url": "https://nginx.org"
+      "id": "cloudbeaver",
+      "name": "CloudBeaver",
+      "description": "Web-based SQL database management",
+      "url": "https://cloudbeaver.spencerjireh.com"
     }
   ]
 }
