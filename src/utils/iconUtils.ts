@@ -17,16 +17,13 @@ import {
   Feather,
   Music,
   Palette,
-  Camera,
   Compass,
   Anchor,
   Crown,
   Clover,
   Flower2,
   Gift,
-  Lightbulb,
   Magnet,
-  Rocket,
   Scissors,
   Shell,
   Umbrella,
@@ -35,16 +32,10 @@ import {
   Apple,
   Bird,
   Fish,
-  Gamepad2,
-  Glasses,
-  Headphones,
   Key,
-  Laptop,
-  Megaphone,
   Mountain,
   Puzzle,
   Sailboat,
-  Telescope,
   Trophy,
   Wand2
 } from 'lucide-react';
@@ -69,16 +60,13 @@ export const aestheticIcons = [
   Feather,
   Music,
   Palette,
-  Camera,
   Compass,
   Anchor,
   Crown,
   Clover,
   Flower2,
   Gift,
-  Lightbulb,
   Magnet,
-  Rocket,
   Scissors,
   Shell,
   Umbrella,
@@ -87,16 +75,10 @@ export const aestheticIcons = [
   Apple,
   Bird,
   Fish,
-  Gamepad2,
-  Glasses,
-  Headphones,
   Key,
-  Laptop,
-  Megaphone,
   Mountain,
   Puzzle,
   Sailboat,
-  Telescope,
   Trophy,
   Wand2
 ] as const;
@@ -121,16 +103,13 @@ export type AestheticIconName =
   | 'Feather'
   | 'Music'
   | 'Palette'
-  | 'Camera'
   | 'Compass'
   | 'Anchor'
   | 'Crown'
   | 'Clover'
   | 'Flower2'
   | 'Gift'
-  | 'Lightbulb'
   | 'Magnet'
-  | 'Rocket'
   | 'Scissors'
   | 'Shell'
   | 'Umbrella'
@@ -139,16 +118,10 @@ export type AestheticIconName =
   | 'Apple'
   | 'Bird'
   | 'Fish'
-  | 'Gamepad2'
-  | 'Glasses'
-  | 'Headphones'
   | 'Key'
-  | 'Laptop'
-  | 'Megaphone'
   | 'Mountain'
   | 'Puzzle'
   | 'Sailboat'
-  | 'Telescope'
   | 'Trophy'
   | 'Wand2';
 
