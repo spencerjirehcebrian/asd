@@ -83,6 +83,7 @@ export interface ServiceCardProps {
   isDimmed?: boolean;
   shouldPulse?: boolean;
   isFocused?: boolean;
+  shouldShowShimmer?: boolean;
 }
 
 export interface ServiceGridProps {

@@ -35,7 +35,8 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   isHighlighted = false, 
   isDimmed = false,
   shouldPulse = false,
-  isFocused = false
+  isFocused = false,
+  shouldShowShimmer = false
 }) => {
   const handleClick = (): void => {
     window.open(service.url, '_blank', 'noopener,noreferrer');
@@ -48,7 +49,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   const baseClasses = "group glass-luxury cursor-pointer p-6 w-full h-40 md:h-44 min-h-[160px] md:min-h-[176px] rounded-xl card-zen-hover inner-shimmer";
   
   const searchClasses = isHighlighted 
-    ? "search-highlight-enhanced search-highlight-shimmer search-highlight-glow" 
+    ? `search-highlight-enhanced ${shouldShowShimmer ? 'search-highlight-shimmer' : ''} search-highlight-glow` 
     : isDimmed 
       ? "opacity-30" 
       : "";

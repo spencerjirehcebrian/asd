@@ -144,10 +144,8 @@
   }
 
   .keyboard-focused {
-    @apply border-slate-300/70;
-    box-shadow: 
-      0 0 0 1px rgba(192, 192, 192, 0.6),
-      0 0 8px rgba(192, 192, 192, 0.25);
+    @apply border-slate-200/80;
+    box-shadow: 0 0 0 1px rgba(220, 220, 220, 0.7);
     outline: none;
   }
 
