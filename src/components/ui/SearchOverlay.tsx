@@ -42,9 +42,11 @@ export const SearchOverlay: React.FC<SearchOverlayProps> = ({ searchTerm, isVisi
 
   return (
     <div className="fixed inset-0 flex items-center justify-center pointer-events-none z-50">
-      <div className="bg-black/20 backdrop-blur-sm rounded-2xl px-8 py-4 animate-in fade-in-0 duration-200">
+      <div className={`bg-black/20 backdrop-blur-sm rounded-2xl px-8 py-4 animate-in fade-in-0 duration-200 transition-opacity duration-[10000ms] ease-out ${
+        shouldFade ? 'opacity-0' : 'opacity-100'
+      }`}>
         <span 
-          className={`text-6xl font-light tracking-wider transition-opacity duration-[4000ms] ease-out ${
+          className={`text-6xl font-light tracking-wider transition-opacity duration-[10000ms] ease-out ${
             shouldFade ? 'opacity-0' : 'opacity-90'
           }`}
         >

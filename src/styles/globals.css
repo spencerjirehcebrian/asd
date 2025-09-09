@@ -90,6 +90,58 @@
     @apply border-yellow-500/60;
     box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.3);
   }
+
+  .search-highlight-enhanced {
+    @apply border-yellow-400/80;
+    background-color: rgba(212, 175, 55, 0.02);
+    box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.4);
+  }
+
+  .search-highlight-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .search-highlight-shimmer::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 150%;
+    height: 150%;
+    background: linear-gradient(
+      135deg,
+      transparent 20%,
+      rgba(212, 175, 55, 0.1) 50%,
+      transparent 80%
+    );
+    animation: search-shimmer-slide 4s ease-in-out infinite;
+  }
+
+  @keyframes search-shimmer-slide {
+    0% {
+      transform: translateX(-100%) translateY(-100%);
+    }
+    50% {
+      transform: translateX(100%) translateY(100%);
+    }
+    100% {
+      transform: translateX(-100%) translateY(-100%);
+    }
+  }
+
+  .search-highlight-glow {
+    animation: search-glow 1.5s ease-in-out infinite alternate;
+  }
+
+  @keyframes search-glow {
+    0% {
+      box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.4);
+    }
+    100% {
+      box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.6);
+    }
+  }
 }
 
 @layer utilities {

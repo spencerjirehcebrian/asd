@@ -9,21 +9,9 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
     shouldPulseHighlighted: false,
   });
 
-  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
-
   const [pulseTimeoutId, setPulseTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
 
-  const resetSearchTimeout = useCallback(() => {
-    return setTimeout(() => {
-      setSearchState(prev => ({
-        ...prev,
-        searchTerm: '',
-        isSearching: false,
-        filteredServices: services,
-        shouldPulseHighlighted: false,
-      }));
-    }, 5000);
-  }, [services]);
+  // Removed automatic search timeout - search persists until manually cleared
 
   const filterServices = useCallback((term: string) => {
     if (!term) return services;
@@ -41,9 +29,6 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       window.open(firstMatch.url, '_blank', 'noopener,noreferrer');
       
       // Reset search after navigation
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
       setSearchState({
         searchTerm: '',
         filteredServices: services,
@@ -71,7 +56,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       
       setPulseTimeoutId(newPulseTimeoutId);
     }
-  }, [searchState.filteredServices, timeoutId, services, pulseTimeoutId]);
+  }, [searchState.filteredServices, services, pulseTimeoutId]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     // Handle ESC key for instant search exit (highest priority)
@@ -81,10 +66,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
         event.preventDefault();
       }
 
-      // Clear all timeouts immediately
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      // Clear pulse timeout immediately
       if (pulseTimeoutId) {
         clearTimeout(pulseTimeoutId);
       }
@@ -112,10 +94,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
         event.preventDefault();
       }
 
-      // Clear existing timeouts
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
+      // Clear existing pulse timeout
       if (pulseTimeoutId) {
         clearTimeout(pulseTimeoutId);
       }
@@ -140,10 +119,6 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
           isSearching: true,
           shouldPulseHighlighted: false,
         });
-
-        // Set new timeout
-        const newTimeoutId = resetSearchTimeout();
-        setTimeoutId(newTimeoutId);
       }
       return;
     }
@@ -158,10 +133,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       event.preventDefault();
     }
 
-    // Clear existing timeouts
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
+    // Clear existing pulse timeout
     if (pulseTimeoutId) {
       clearTimeout(pulseTimeoutId);
     }
@@ -176,11 +148,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       isSearching: true,
       shouldPulseHighlighted: false,
     });
-
-    // Set new timeout
-    const newTimeoutId = resetSearchTimeout();
-    setTimeoutId(newTimeoutId);
-  }, [searchState.searchTerm, searchState.isSearching, timeoutId, pulseTimeoutId, filterServices, resetSearchTimeout, navigateToFirstMatch, services]);
+  }, [searchState.searchTerm, searchState.isSearching, pulseTimeoutId, filterServices, navigateToFirstMatch, services]);
 
   // Update filtered services when services prop changes
   useEffect(() => {
@@ -198,14 +166,11 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
     
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
       if (pulseTimeoutId) {
         clearTimeout(pulseTimeoutId);
       }
     };
-  }, [handleKeyPress, timeoutId, pulseTimeoutId]);
+  }, [handleKeyPress, pulseTimeoutId]);
 
   return {
     searchState,

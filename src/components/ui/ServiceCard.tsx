@@ -47,7 +47,7 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   const baseClasses = "group glass-luxury cursor-pointer p-6 w-full h-40 md:h-44 min-h-[160px] md:min-h-[176px] rounded-xl card-zen-hover inner-shimmer";
   
   const searchClasses = isHighlighted 
-    ? "gold-highlight" 
+    ? "search-highlight-enhanced search-highlight-shimmer search-highlight-glow" 
     : isDimmed 
       ? "opacity-30" 
       : "";
