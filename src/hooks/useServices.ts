@@ -171,5 +171,18 @@ export const useServices = (): UseServicesResult => {
     }
   }, [refresh]);
 
-  return { services, title, loading, error };
+  // Add cache management service card at the end
+  const servicesWithCacheManagement = [
+    ...services,
+    {
+      id: '__cache_management__',
+      name: 'Clear Cache',
+      description: 'Clear cache and refresh services',
+      url: '#',
+      icon: 'HardDrive' as const,
+      category: 'system'
+    }
+  ];
+
+  return { services: servicesWithCacheManagement, title, loading, error };
 };

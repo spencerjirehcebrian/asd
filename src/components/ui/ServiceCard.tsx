@@ -39,6 +39,15 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   shouldShowShimmer = false
 }) => {
   const handleClick = (): void => {
+    // Handle cache management service click
+    if (service.id === '__cache_management__') {
+      // Clear cache and refresh page
+      localStorage.removeItem('asd_services_cache');
+      sessionStorage.removeItem('asd_services_cache');
+      window.location.reload();
+      return;
+    }
+    
     window.open(service.url, '_blank', 'noopener,noreferrer');
   };
 
