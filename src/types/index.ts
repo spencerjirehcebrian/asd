@@ -113,7 +113,7 @@ export interface SettingsModalProps {
 }
 
 // Settings section types
-export type SettingsSectionId = 'github' | 'local' | 'cache';
+export type SettingsSectionId = 'configuration' | 'cache';
 
 export interface SettingsSection {
   id: SettingsSectionId;
