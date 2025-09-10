@@ -1,7 +1,7 @@
 import { ServiceCard } from './ServiceCard';
 import { ServiceGridProps } from '../../types';
 
-export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState }) => {
+export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState, onSettingsClick }) => {
   const servicesToDisplay = searchState?.filteredServices || services;
   const isSearching = searchState?.isSearching || false;
   const shouldPulseHighlighted = searchState?.shouldPulseHighlighted || false;
@@ -28,6 +28,7 @@ export const ServiceGrid: React.FC<ServiceGridProps> = ({ services, searchState 
                 shouldPulse={shouldPulse}
                 isFocused={isFocused}
                 shouldShowShimmer={shouldShowShimmer}
+                onSettingsClick={onSettingsClick}
               />
             );
           })}

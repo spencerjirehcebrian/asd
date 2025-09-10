@@ -171,17 +171,17 @@ export const useServices = (): UseServicesResult => {
     }
   }, [refresh]);
 
-  // Add cache management service card at the end (memoized to prevent infinite re-renders)
-  const servicesWithCacheManagement = useMemo(() => [
+  // Add settings service card at the end (memoized to prevent infinite re-renders)
+  const servicesWithSettings = useMemo(() => [
     ...services,
     {
-      id: '__cache_management__',
-      name: 'Clear Cache',
-      description: 'Clear cache and refresh services',
+      id: '__settings__',
+      name: 'Settings',
+      description: 'Configure application settings and preferences',
       url: '',
       category: 'system'
     }
   ], [services]);
 
-  return { services: servicesWithCacheManagement, title, loading, error };
+  return { services: servicesWithSettings, title, loading, error };
 };

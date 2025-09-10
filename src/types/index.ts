@@ -85,16 +85,41 @@ export interface ServiceCardProps {
   shouldPulse?: boolean;
   isFocused?: boolean;
   shouldShowShimmer?: boolean;
+  onSettingsClick?: () => void;
 }
 
 export interface ServiceGridProps {
   services: Service[];
   searchState?: SearchState;
+  onSettingsClick?: () => void;
 }
 
 export interface SearchOverlayProps {
   searchTerm: string;
   isVisible: boolean;
+}
+
+// Modal interfaces
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  title?: string;
+}
+
+export interface SettingsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+// Settings section types
+export type SettingsSectionId = 'github' | 'local' | 'cache';
+
+export interface SettingsSection {
+  id: SettingsSectionId;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
 }
 
 // Utility types  

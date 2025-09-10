@@ -8,15 +8,15 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
   isDimmed = false,
   shouldPulse = false,
   isFocused = false,
-  shouldShowShimmer = false
+  shouldShowShimmer = false,
+  onSettingsClick
 }) => {
   const handleClick = (): void => {
-    // Handle cache management service click
-    if (service.id === '__cache_management__') {
-      // Clear cache and refresh page
-      localStorage.removeItem('asd_services_cache');
-      sessionStorage.removeItem('asd_services_cache');
-      window.location.reload();
+    // Handle settings service click
+    if (service.id === '__settings__') {
+      if (onSettingsClick) {
+        onSettingsClick();
+      }
       return;
     }
     

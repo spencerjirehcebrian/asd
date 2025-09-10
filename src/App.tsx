@@ -1,13 +1,24 @@
+import { useState } from 'react';
 import { useServices } from './hooks/useServices';
 import { useKeyboardSearch } from './hooks/useKeyboardSearch';
 import { ServiceGrid } from './components/ui/ServiceGrid';
 import { SearchOverlay } from './components/ui/SearchOverlay';
 import { LoadingSpinner } from './components/common/LoadingSpinner';
 import { Header } from './components/ui/Header';
+import { SettingsModal } from './components/ui/SettingsModal';
 
 const App: React.FC = () => {
+  const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const { services, title, loading, error } = useServices();
   const { searchState } = useKeyboardSearch(services);
+
+  const handleSettingsClick = () => {
+    setIsSettingsModalOpen(true);
+  };
+
+  const handleCloseSettingsModal = () => {
+    setIsSettingsModalOpen(false);
+  };
 
   if (loading) {
     return (
@@ -51,12 +62,21 @@ const App: React.FC = () => {
       <Header title={title} />
       
       <main className="w-full">
-        <ServiceGrid services={services} searchState={searchState} />
+        <ServiceGrid 
+          services={services} 
+          searchState={searchState} 
+          onSettingsClick={handleSettingsClick}
+        />
       </main>
       
       <SearchOverlay 
         searchTerm={searchState.searchTerm}
         isVisible={searchState.isSearching}
+      />
+      
+      <SettingsModal 
+        isOpen={isSettingsModalOpen}
+        onClose={handleCloseSettingsModal}
       />
     </div>
   );
