@@ -3,6 +3,7 @@ import yaml from 'js-yaml';
 import { Service, ServicesConfig, UseServicesResult } from '../types';
 import { cacheManager } from '../utils/cacheManager';
 import { githubApi } from '../utils/githubApi';
+import { settingsManager } from '../utils/settingsManager';
 
 export const useServices = (): UseServicesResult => {
   const [services, setServices] = useState<Service[]>([]);
@@ -11,11 +12,14 @@ export const useServices = (): UseServicesResult => {
   const [error, setError] = useState<string | null>(null);
 
   /**
-   * Load services from GitHub API with caching
+   * Load services from configured GitHub repository with caching
    */
   const loadFromGitHub = useCallback(async (cachedEtag?: string): Promise<ServicesConfig | null> => {
     try {
-      const result = await githubApi.fetchConfig(cachedEtag);
+      const settings = settingsManager.getSettings();
+      const { repository, filePath, token } = settings.githubConfig;
+      
+      const result = await githubApi.fetchConfig(repository, filePath, token, cachedEtag);
       
       // Cache the successful response
       cacheManager.set(result.data, 'github_api', result.etag);
@@ -55,6 +59,28 @@ export const useServices = (): UseServicesResult => {
   }, []);
 
   /**
+   * Load services from local configuration stored in settings
+   */
+  const loadFromLocalConfig = useCallback(async (): Promise<ServicesConfig> => {
+    const settings = settingsManager.getSettings();
+    const { yamlContent } = settings.localConfig;
+    
+    if (!yamlContent.trim()) {
+      throw new Error('No local configuration available');
+    }
+    
+    const config = settingsManager.parseYamlToConfig(yamlContent);
+    if (!config) {
+      throw new Error('Invalid local YAML configuration');
+    }
+    
+    // Cache the local configuration
+    cacheManager.set(config, 'local_yaml');
+    
+    return config;
+  }, []);
+
+  /**
    * Load services from local JSON file (final fallback)
    */
   const loadFromLocalJson = useCallback(async (): Promise<ServicesConfig> => {
@@ -76,12 +102,15 @@ export const useServices = (): UseServicesResult => {
   }, []);
 
   /**
-   * Main service loading function with comprehensive fallback chain
+   * Main service loading function with settings-based source selection
    */
   const fetchServices = useCallback(async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
+
+      const settings = settingsManager.getSettings();
+      const activeSource = settings.activeSource;
 
       // Step 1: Check cache first
       const cachedData = cacheManager.get();
@@ -90,8 +119,8 @@ export const useServices = (): UseServicesResult => {
         setTitle(cachedData.data.title);
         setLoading(false);
         
-        // If cache is near expiry, refresh in background
-        if (cacheManager.isNearExpiry()) {
+        // If cache is near expiry and using GitHub source, refresh in background
+        if (cacheManager.isNearExpiry() && activeSource === 'github') {
           try {
             const refreshedData = await loadFromGitHub(cachedData.etag);
             if (refreshedData) {
@@ -106,20 +135,58 @@ export const useServices = (): UseServicesResult => {
         return;
       }
 
-      // Step 2: Try GitHub API
-      try {
-        const githubData = await loadFromGitHub();
-        if (githubData) {
-          setServices(githubData.services);
-          setTitle(githubData.title);
+      // Step 2: Try primary source based on settings
+      if (activeSource === 'local') {
+        // Local configuration is primary
+        try {
+          const localData = await loadFromLocalConfig();
+          setServices(localData.services);
+          setTitle(localData.title);
           setLoading(false);
           return;
+        } catch (localError) {
+          console.warn('Local configuration failed, trying GitHub:', localError);
+          
+          // Fallback to GitHub if local fails
+          try {
+            const githubData = await loadFromGitHub();
+            if (githubData) {
+              setServices(githubData.services);
+              setTitle(githubData.title);
+              setLoading(false);
+              return;
+            }
+          } catch (githubError) {
+            console.warn('GitHub fallback failed, trying local files:', githubError);
+          }
         }
-      } catch (githubError) {
-        console.warn('GitHub API unavailable, trying local files:', githubError);
+      } else {
+        // GitHub is primary
+        try {
+          const githubData = await loadFromGitHub();
+          if (githubData) {
+            setServices(githubData.services);
+            setTitle(githubData.title);
+            setLoading(false);
+            return;
+          }
+        } catch (githubError) {
+          console.warn('GitHub API failed, trying local configuration:', githubError);
+          
+          // Fallback to local configuration if GitHub fails
+          try {
+            const localData = await loadFromLocalConfig();
+            setServices(localData.services);
+            setTitle(localData.title);
+            setLoading(false);
+            return;
+          } catch (localError) {
+            console.warn('Local configuration fallback failed, trying local files:', localError);
+          }
+        }
       }
 
-      // Step 3: Try local YAML file
+      // Step 3: Try local YAML file (secondary fallback)
       try {
         const yamlData = await loadFromLocalYaml();
         setServices(yamlData.services);
@@ -147,7 +214,7 @@ export const useServices = (): UseServicesResult => {
       setError(errorMessage);
       setLoading(false);
     }
-  }, [loadFromGitHub, loadFromLocalYaml, loadFromLocalJson]);
+  }, [loadFromGitHub, loadFromLocalConfig, loadFromLocalYaml, loadFromLocalJson]);
 
   /**
    * Manual refresh function to clear cache and reload

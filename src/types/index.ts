@@ -122,6 +122,32 @@ export interface SettingsSection {
   description: string;
 }
 
+// Settings system types
+export type ConfigSource = 'github' | 'local';
+
+export interface GitHubRepoConfig {
+  repository: string; // format: "owner/repo"
+  filePath: string;
+  token?: string;
+}
+
+export interface LocalConfig {
+  yamlContent: string;
+  lastModified: number;
+}
+
+export interface AppSettings {
+  activeSource: ConfigSource;
+  githubConfig: GitHubRepoConfig;
+  localConfig: LocalConfig;
+}
+
+export interface SettingsValidationResult {
+  isValid: boolean;
+  errors: string[];
+  warnings?: string[];
+}
+
 // Utility types  
 export type LucideIconName = 
   | 'Sun'

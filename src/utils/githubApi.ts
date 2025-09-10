@@ -1,9 +1,9 @@
 import yaml from 'js-yaml';
 import { GitHubFileResponse, ServicesConfig } from '../types';
 
-// GitHub repository configuration
-const GITHUB_REPO = 'spencerjirehcebrian/asd';
-const CONFIG_FILE_PATH = 'public/config/services.yml';
+// Default GitHub repository configuration (fallback)
+const DEFAULT_GITHUB_REPO = 'spencerjirehcebrian/asd';
+const DEFAULT_CONFIG_FILE_PATH = 'public/config/services.yml';
 const GITHUB_TOKEN = import.meta.env.REACT_APP_GITHUB_TOKEN; // Optional
 
 /**
@@ -11,21 +11,20 @@ const GITHUB_TOKEN = import.meta.env.REACT_APP_GITHUB_TOKEN; // Optional
  */
 export class GitHubApiClient {
   private baseUrl = 'https://api.github.com';
-  private repo = GITHUB_REPO;
-  private filePath = CONFIG_FILE_PATH;
 
   /**
    * Get authorization headers if token is available
    */
-  private getHeaders(etag?: string): HeadersInit {
+  private getHeaders(etag?: string, token?: string): HeadersInit {
     const headers: HeadersInit = {
       'Accept': 'application/vnd.github.v3+json',
       'User-Agent': 'ASD-Dashboard/1.0',
     };
 
-    // Add authorization if token is available
-    if (GITHUB_TOKEN) {
-      headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+    // Add authorization if token is available (prioritize passed token over env token)
+    const authToken = token || GITHUB_TOKEN;
+    if (authToken) {
+      headers['Authorization'] = `token ${authToken}`;
     }
 
     // Add ETag for conditional requests
@@ -68,13 +67,20 @@ export class GitHubApiClient {
   /**
    * Fetch configuration from GitHub with ETag support
    */
-  public async fetchConfig(cachedEtag?: string): Promise<{
+  public async fetchConfig(
+    repository?: string,
+    filePath?: string,
+    token?: string,
+    cachedEtag?: string
+  ): Promise<{
     data: ServicesConfig;
     etag: string;
     fromCache: boolean;
   }> {
-    const url = `${this.baseUrl}/repos/${this.repo}/contents/${this.filePath}`;
-    const headers = this.getHeaders(cachedEtag);
+    const repo = repository || DEFAULT_GITHUB_REPO;
+    const path = filePath || DEFAULT_CONFIG_FILE_PATH;
+    const url = `${this.baseUrl}/repos/${repo}/contents/${path}`;
+    const headers = this.getHeaders(cachedEtag, token);
 
     try {
       const response = await fetch(url, { headers });
@@ -130,14 +136,14 @@ export class GitHubApiClient {
   /**
    * Get API rate limit status
    */
-  public async getRateLimitStatus(): Promise<{
+  public async getRateLimitStatus(token?: string): Promise<{
     limit: number;
     remaining: number;
     reset: Date;
     used: number;
   }> {
     const url = `${this.baseUrl}/rate_limit`;
-    const headers = this.getHeaders();
+    const headers = this.getHeaders(undefined, token);
 
     try {
       const response = await fetch(url, { headers });
@@ -157,10 +163,10 @@ export class GitHubApiClient {
   /**
    * Check if the API is available and responding
    */
-  public async healthCheck(): Promise<boolean> {
+  public async healthCheck(token?: string): Promise<boolean> {
     try {
       const response = await fetch(`${this.baseUrl}/rate_limit`, {
-        headers: this.getHeaders(),
+        headers: this.getHeaders(undefined, token),
         signal: AbortSignal.timeout(5000), // 5 second timeout
       });
       return response.ok;
