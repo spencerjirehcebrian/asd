@@ -3,6 +3,7 @@ import { Check, AlertCircle, X, FileEdit, Save } from 'lucide-react';
 import { Modal } from './Modal';
 import { YamlEditorModalProps, SettingsValidationResult } from '../../types';
 import { settingsManager } from '../../utils/settingsManager';
+import { useModalContext } from '../../contexts/ModalContext';
 
 export const YamlEditorModal: React.FC<YamlEditorModalProps> = ({ 
   isOpen, 
@@ -11,6 +12,7 @@ export const YamlEditorModal: React.FC<YamlEditorModalProps> = ({
   onSave, 
   title = "YAML Configuration Editor" 
 }) => {
+  const { registerModal, unregisterModal } = useModalContext();
   const [content, setContent] = useState(initialContent);
   const [validationResult, setValidationResult] = useState<SettingsValidationResult>({ isValid: true, errors: [] });
   const [hasChanges, setHasChanges] = useState(false);
@@ -28,6 +30,20 @@ export const YamlEditorModal: React.FC<YamlEditorModalProps> = ({
       }
     }
   }, [isOpen, initialContent]);
+
+  // Register/unregister modal with context
+  useEffect(() => {
+    if (isOpen) {
+      registerModal('yamlEditor');
+    } else {
+      unregisterModal('yamlEditor');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      unregisterModal('yamlEditor');
+    };
+  }, [isOpen, registerModal, unregisterModal]);
 
   // Handle content changes with real-time validation
   const handleContentChange = useCallback((newContent: string) => {

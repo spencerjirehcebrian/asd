@@ -6,11 +6,13 @@ import { SearchOverlay } from './components/ui/SearchOverlay';
 import { LoadingSpinner } from './components/common/LoadingSpinner';
 import { Header } from './components/ui/Header';
 import { SettingsModal } from './components/ui/SettingsModal';
+import { ModalContextProvider, useModalContext } from './contexts/ModalContext';
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const { services, title, loading, error } = useServices();
-  const { searchState } = useKeyboardSearch(services);
+  const { isAnyModalOpen } = useModalContext();
+  const { searchState } = useKeyboardSearch(services, isAnyModalOpen);
 
   const handleSettingsClick = () => {
     setIsSettingsModalOpen(true);
@@ -79,6 +81,14 @@ const App: React.FC = () => {
         onClose={handleCloseSettingsModal}
       />
     </div>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <ModalContextProvider>
+      <AppContent />
+    </ModalContextProvider>
   );
 };
 

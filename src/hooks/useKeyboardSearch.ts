@@ -7,7 +7,7 @@ import {
   findServiceIndex 
 } from '../utils/navigationUtils';
 
-export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult => {
+export const useKeyboardSearch = (services: Service[], disabled?: boolean): UseKeyboardSearchResult => {
   const [searchState, setSearchState] = useState<SearchState>({
     searchTerm: '',
     filteredServices: services,
@@ -110,6 +110,11 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
   }, [searchState.filteredServices, services, pulseTimeoutId]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
+    // Early return if keyboard shortcuts are disabled (e.g., when modals are open)
+    if (disabled) {
+      return;
+    }
+
     // Never intercept when modifier keys are pressed (except Shift for Tab navigation)
     if (event.ctrlKey || event.metaKey || event.altKey) {
       return;
@@ -289,7 +294,7 @@ export const useKeyboardSearch = (services: Service[]): UseKeyboardSearchResult 
       
       return newState;
     });
-  }, [searchState.searchTerm, searchState.isSearching, searchState.focusedService, pulseTimeoutId, filterServices, navigateToFirstMatch, navigateToFocusedService, handleTabNavigation, handleArrowNavigation, services]);
+  }, [disabled, searchState.searchTerm, searchState.isSearching, searchState.focusedService, pulseTimeoutId, filterServices, navigateToFirstMatch, navigateToFocusedService, handleTabNavigation, handleArrowNavigation, services]);
 
   // Update filtered services when services prop changes (memoized to prevent infinite re-renders)
   const servicesChanged = useMemo(() => services, [services]);

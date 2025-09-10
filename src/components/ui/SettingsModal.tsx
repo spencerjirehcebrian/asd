@@ -4,8 +4,10 @@ import { Modal } from './Modal';
 import { YamlEditorModal } from './YamlEditorModal';
 import { SettingsModalProps, SettingsSection, SettingsSectionId, ConfigSource, GitHubRepoConfig, LocalConfig } from '../../types';
 import { settingsManager } from '../../utils/settingsManager';
+import { useModalContext } from '../../contexts/ModalContext';
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {
+  const { registerModal, unregisterModal } = useModalContext();
   const [activeSection, setActiveSection] = useState<SettingsSectionId>('configuration');
   
   // Settings state
@@ -57,6 +59,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
       setConnectionStatus('idle');
     }
   }, [isOpen]);
+
+  // Register/unregister modal with context
+  useEffect(() => {
+    if (isOpen) {
+      registerModal('settings');
+    } else {
+      unregisterModal('settings');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      unregisterModal('settings');
+    };
+  }, [isOpen, registerModal, unregisterModal]);
 
   // Tab navigation (separate from source activation)
   const handleTabChange = (tab: ConfigSource) => {

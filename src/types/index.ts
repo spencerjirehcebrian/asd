@@ -116,6 +116,7 @@ export interface YamlEditorModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialContent: string;
+  // eslint-disable-next-line no-unused-vars
   onSave: (content: string) => void;
   title?: string;
 }
