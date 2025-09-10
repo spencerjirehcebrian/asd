@@ -154,7 +154,7 @@ services:
     category: "productivity"`;
 
   return (
-    <Modal isOpen={isOpen} onClose={handleCancel} title={title}>
+    <Modal isOpen={isOpen} onClose={handleCancel} title={title} zIndex={60}>
       <div className="flex flex-col h-[70vh] max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">

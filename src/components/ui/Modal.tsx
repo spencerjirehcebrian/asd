@@ -1,30 +1,57 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
 import { ModalProps } from '../../types';
 
-export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title }) => {
+export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, title, zIndex = 50 }) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+    if (!isOpen) return;
+
+    const handleEscKey = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        onClose();
+        // Find all open modals in DOM order
+        const allModals = document.querySelectorAll('[data-modal="true"]');
+        const currentModal = modalRef.current;
+        
+        if (currentModal && allModals.length > 0) {
+          // Get the last modal in DOM order (highest in stack)
+          const topModal = allModals[allModals.length - 1];
+          
+          // Only close if this is the topmost modal
+          if (currentModal === topModal || currentModal.contains(topModal)) {
+            event.stopPropagation();
+            onClose();
+          }
+        }
       }
     };
 
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'hidden';
-    }
+    // Add event listener to capture phase to handle before other modals
+    document.addEventListener('keydown', handleEscKey, { capture: true });
+    
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
 
     return () => {
-      document.removeEventListener('keydown', handleEscape);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener('keydown', handleEscKey, { capture: true });
+      // Only restore scroll if this was the last modal
+      const remainingModals = document.querySelectorAll('[data-modal="true"]');
+      if (remainingModals.length <= 1) {
+        document.body.style.overflow = 'unset';
+      }
     };
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <div 
+      ref={modalRef}
+      data-modal="true"
+      className="fixed inset-0 flex items-center justify-center" 
+      style={{ zIndex }}
+    >
       {/* Backdrop */}
       <div 
         className="fixed inset-0 bg-black/50 backdrop-blur-sm"
