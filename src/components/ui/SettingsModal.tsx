@@ -208,90 +208,80 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     switch (activeSection) {
       case 'configuration':
         return (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <IconComponent className="w-8 h-8 text-zinc-400" />
+              <IconComponent className="w-6 h-6 text-zinc-400" />
               <div>
-                <h3 className="text-2xl font-semibold text-zinc-100">{currentSection.name}</h3>
-                <p className="text-zinc-400 mt-1">{currentSection.description}</p>
+                <h3 className="text-lg font-semibold text-zinc-100">{currentSection.name}</h3>
+                <p className="text-sm text-zinc-400 mt-1">{currentSection.description}</p>
               </div>
             </div>
 
             {/* Current Source Status */}
-            <div className="border border-zinc-800/50 rounded-xl p-4 bg-zinc-900/30">
+            <div className="glass-luxury rounded-lg p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-zinc-300">Currently Active:</span>
-                  <span className="text-sm font-medium text-zinc-100">
+                  <div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
+                  <span className="text-xs text-zinc-300">Active:</span>
+                  <span className="text-xs font-medium text-zinc-100">
                     {activeSource === 'github' ? 'GitHub Repository' : 'Local Configuration'}
                   </span>
                 </div>
                 {activeSource === 'github' ? (
-                  <Github className="w-4 h-4 text-blue-400" />
+                  <Github className="w-3.5 h-3.5 text-yellow-400" />
                 ) : (
-                  <FolderOpen className="w-4 h-4 text-green-400" />
+                  <FolderOpen className="w-3.5 h-3.5 text-yellow-400" />
                 )}
               </div>
             </div>
 
             {/* Tab Navigation */}
-            <div className="border border-zinc-800/50 rounded-xl p-6 bg-zinc-900/30">
-              <div className="flex p-1 bg-zinc-800/50 rounded-lg">
+            <div className="glass-luxury rounded-lg p-4">
+              <div className="flex p-0.5 bg-zinc-800/50 rounded-md">
                 <button
                   onClick={() => handleTabChange('github')}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md transition-all duration-200 font-medium text-sm ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-all duration-200 font-medium text-xs ${
                     activeTab === 'github'
-                      ? 'bg-zinc-700 text-zinc-100 shadow-md'
+                      ? 'bg-zinc-700 text-zinc-100 shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50'
                   }`}
                 >
-                  <Github className="w-4 h-4" />
-                  GitHub Repository
-                  {activeSource === 'github' && (
-                    <span className="ml-1 text-xs px-1.5 py-0.5 bg-green-500 text-white rounded-full">
-                      ACTIVE
-                    </span>
-                  )}
+                  <Github className="w-3.5 h-3.5" />
+                  GitHub
                 </button>
                 <button
                   onClick={() => handleTabChange('local')}
-                  className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-md transition-all duration-200 font-medium text-sm ${
+                  className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-md transition-all duration-200 font-medium text-xs ${
                     activeTab === 'local'
-                      ? 'bg-zinc-700 text-zinc-100 shadow-md'
+                      ? 'bg-zinc-700 text-zinc-100 shadow-sm'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700/50'
                   }`}
                 >
-                  <FolderOpen className="w-4 h-4" />
-                  Local Configuration
-                  {activeSource === 'local' && (
-                    <span className="ml-1 text-xs px-1.5 py-0.5 bg-green-500 text-white rounded-full">
-                      ACTIVE
-                    </span>
-                  )}
+                  <FolderOpen className="w-3.5 h-3.5" />
+                  Local
                 </button>
               </div>
             </div>
 
             {/* Dynamic Content */}
-            <div className="min-h-[400px]">
+            <div className="min-h-[320px]">
               {activeTab === 'github' ? (
-                <div className="border border-zinc-800/50 rounded-xl p-8 bg-zinc-900/30">
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-blue-600/10 border border-blue-600/20">
-                        <Github className="w-6 h-6 text-blue-400" />
+                <div className="glass-luxury rounded-lg p-5">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-yellow-600/10 border border-yellow-600/20">
+                        <Github className="w-4 h-4 text-yellow-400" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-lg font-medium text-zinc-100 mb-2">GitHub Repository</h4>
-                        <p className="text-zinc-400 text-sm mb-6">
+                        <h4 className="text-base font-medium text-zinc-100 mb-1">GitHub Repository</h4>
+                        <p className="text-xs text-zinc-400 mb-4">
                           Configure your GitHub repository to fetch service configurations automatically.
                         </p>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                           {/* Repository Field */}
                           <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                               Repository (owner/repo)
                             </label>
                             <input
@@ -299,13 +289,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                               value={githubConfig.repository}
                               onChange={(e) => handleGitHubConfigChange('repository', e.target.value)}
                               placeholder="spencerjirehcebrian/asd"
-                              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50"
                             />
                           </div>
 
                           {/* File Path Field */}
                           <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                               Configuration File Path
                             </label>
                             <input
@@ -313,13 +303,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                               value={githubConfig.filePath}
                               onChange={(e) => handleGitHubConfigChange('filePath', e.target.value)}
                               placeholder="public/config/services.yml"
-                              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50"
                             />
                           </div>
 
                           {/* Token Field */}
                           <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                               GitHub Token (Optional, for private repositories)
                             </label>
                             <input
@@ -327,56 +317,56 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                               value={githubConfig.token}
                               onChange={(e) => handleGitHubConfigChange('token', e.target.value)}
                               placeholder="ghp_..."
-                              className="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              className="w-full px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50"
                             />
                           </div>
 
                           {/* Test Connection Button */}
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3">
                             <button
                               onClick={handleTestConnection}
                               disabled={isTestingConnection || !githubConfig.repository}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 font-medium"
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-zinc-700 disabled:opacity-50 text-zinc-900 rounded-md transition-colors duration-200 font-medium text-xs"
                             >
                               {isTestingConnection ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
                               ) : connectionStatus === 'success' ? (
-                                <Check className="w-4 h-4" />
+                                <Check className="w-3.5 h-3.5" />
                               ) : connectionStatus === 'error' ? (
-                                <AlertCircle className="w-4 h-4" />
+                                <AlertCircle className="w-3.5 h-3.5" />
                               ) : (
-                                <Github className="w-4 h-4" />
+                                <Github className="w-3.5 h-3.5" />
                               )}
                               {isTestingConnection ? 'Testing...' : 'Test Connection'}
                             </button>
                             
                             {connectionStatus === 'success' && (
-                              <span className="text-green-400 text-sm flex items-center gap-1">
-                                <Check className="w-4 h-4" />
+                              <span className="text-yellow-400 text-xs flex items-center gap-1">
+                                <Check className="w-3.5 h-3.5" />
                                 Repository accessible
                               </span>
                             )}
                           </div>
 
                           {/* Source Activation Button */}
-                          <div className="pt-4 border-t border-zinc-700/50">
+                          <div className="pt-3 border-t border-zinc-700/30">
                             {activeSource === 'github' ? (
-                              <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-2 px-4 py-3 bg-green-600/10 border border-green-600/20 rounded-lg">
-                                  <Check className="w-5 h-5 text-green-400" />
-                                  <span className="text-green-300 font-medium">Currently Active Source</span>
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5 px-3 py-2 bg-yellow-600/10 border border-yellow-600/20 rounded-md">
+                                  <Check className="w-3.5 h-3.5 text-yellow-400" />
+                                  <span className="text-yellow-300 font-medium text-xs">Active Source</span>
                                 </div>
-                                <span className="text-zinc-400 text-sm">
-                                  This GitHub repository is actively being used for service data
+                                <span className="text-zinc-400 text-xs">
+                                  This GitHub repository is actively being used
                                 </span>
                               </div>
                             ) : (
                               <button
                                 onClick={() => handleSourceActivation('github')}
                                 disabled={!githubConfig.repository || !githubConfig.filePath}
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 font-medium"
+                                className="inline-flex items-center gap-1.5 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-zinc-700 disabled:opacity-50 text-zinc-900 rounded-md transition-colors duration-200 font-medium text-xs"
                               >
-                                <Github className="w-5 h-5" />
+                                <Github className="w-3.5 h-3.5" />
                                 Use GitHub as Source
                               </button>
                             )}
@@ -384,10 +374,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
                           {/* Validation Errors */}
                           {validationErrors.length > 0 && (
-                            <div className="p-4 bg-red-600/10 border border-red-600/20 rounded-lg">
+                            <div className="p-3 bg-red-600/10 border border-red-600/20 rounded-md">
                               <div className="flex items-start gap-2">
-                                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                                <div className="text-red-300 text-sm">
+                                <AlertCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
+                                <div className="text-red-300 text-xs">
                                   {validationErrors.map((error, index) => (
                                     <div key={index}>{error}</div>
                                   ))}
@@ -401,31 +391,31 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                   </div>
                 </div>
               ) : (
-                <div className="border border-zinc-800/50 rounded-xl p-8 bg-zinc-900/30">
-                  <div className="space-y-6">
-                    <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-xl bg-green-600/10 border border-green-600/20">
-                        <FolderOpen className="w-6 h-6 text-green-400" />
+                <div className="glass-luxury rounded-lg p-5">
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-lg bg-yellow-600/10 border border-yellow-600/20">
+                        <FolderOpen className="w-4 h-4 text-yellow-400" />
                       </div>
                       <div className="flex-1">
-                        <h4 className="text-lg font-medium text-zinc-100 mb-2">Local YAML Configuration</h4>
-                        <p className="text-zinc-400 text-sm mb-6">
+                        <h4 className="text-base font-medium text-zinc-100 mb-1">Local YAML Configuration</h4>
+                        <p className="text-xs text-zinc-400 mb-4">
                           Edit your service configuration directly. Import from GitHub or create your own YAML configuration.
                         </p>
 
-                        <div className="space-y-4">
+                        <div className="space-y-3">
                           {/* Import Button */}
                           <div className="flex gap-3">
                             <button
                               onClick={handleImportFromGitHub}
                               disabled={!githubConfig.repository || !githubConfig.filePath}
-                              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 font-medium text-sm"
+                              className="inline-flex items-center gap-1.5 px-3 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-zinc-700 disabled:opacity-50 text-zinc-900 rounded-md transition-colors duration-200 font-medium text-xs"
                             >
-                              <Github className="w-4 h-4" />
+                              <Github className="w-3.5 h-3.5" />
                               Import from GitHub
                             </button>
                             {localConfig.lastModified > 0 && (
-                              <span className="text-zinc-400 text-sm flex items-center">
+                              <span className="text-zinc-400 text-xs flex items-center">
                                 Last modified: {new Date(localConfig.lastModified).toLocaleString()}
                               </span>
                             )}
@@ -433,7 +423,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
 
                           {/* YAML Editor */}
                           <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                               YAML Configuration
                             </label>
                             <textarea
@@ -446,45 +436,45 @@ services:
     description: "An example service configuration"
     url: "https://example.com"
     category: "tools"`}
-                              className="w-full h-64 px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent font-mono text-sm resize-none"
+                              className="w-full h-48 px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50 font-mono text-xs resize-none"
                             />
                           </div>
 
                           {/* Save Button */}
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-3">
                             <button
                               onClick={handleSaveLocalConfig}
                               disabled={!localConfig.yamlContent.trim() || validationErrors.length > 0 || isSaving}
-                              className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 font-medium"
+                              className="inline-flex items-center gap-1.5 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-zinc-700 disabled:opacity-50 text-zinc-900 rounded-md transition-colors duration-200 font-medium text-xs"
                             >
                               {isSaving ? (
-                                <Loader2 className="w-4 h-4 animate-spin" />
+                                <Loader2 className="w-3.5 h-3.5 animate-spin" />
                               ) : (
-                                <Check className="w-4 h-4" />
+                                <Check className="w-3.5 h-3.5" />
                               )}
                               {isSaving ? 'Saving...' : 'Save Configuration'}
                             </button>
                           </div>
 
                           {/* Source Activation Button */}
-                          <div className="pt-4 border-t border-zinc-700/50">
+                          <div className="pt-3 border-t border-zinc-700/30">
                             {activeSource === 'local' ? (
-                              <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-2 px-4 py-3 bg-green-600/10 border border-green-600/20 rounded-lg">
-                                  <Check className="w-5 h-5 text-green-400" />
-                                  <span className="text-green-300 font-medium">Currently Active Source</span>
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center gap-1.5 px-3 py-2 bg-yellow-600/10 border border-yellow-600/20 rounded-md">
+                                  <Check className="w-3.5 h-3.5 text-yellow-400" />
+                                  <span className="text-yellow-300 font-medium text-xs">Active Source</span>
                                 </div>
-                                <span className="text-zinc-400 text-sm">
-                                  This local configuration is actively being used for service data
+                                <span className="text-zinc-400 text-xs">
+                                  This local configuration is actively being used
                                 </span>
                               </div>
                             ) : (
                               <button
                                 onClick={() => handleSourceActivation('local')}
                                 disabled={!localConfig.yamlContent.trim() || validationErrors.length > 0}
-                                className="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-zinc-700 disabled:opacity-50 text-white rounded-lg transition-colors duration-200 font-medium"
+                                className="inline-flex items-center gap-1.5 px-4 py-2 bg-yellow-600 hover:bg-yellow-700 disabled:bg-zinc-700 disabled:opacity-50 text-zinc-900 rounded-md transition-colors duration-200 font-medium text-xs"
                               >
-                                <FolderOpen className="w-5 h-5" />
+                                <FolderOpen className="w-3.5 h-3.5" />
                                 Use Local as Source
                               </button>
                             )}
@@ -492,10 +482,10 @@ services:
 
                           {/* Validation Errors */}
                           {validationErrors.length > 0 && (
-                            <div className="p-4 bg-red-600/10 border border-red-600/20 rounded-lg">
+                            <div className="p-3 bg-red-600/10 border border-red-600/20 rounded-md">
                               <div className="flex items-start gap-2">
-                                <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                                <div className="text-red-300 text-sm">
+                                <AlertCircle className="w-3.5 h-3.5 text-red-400 flex-shrink-0 mt-0.5" />
+                                <div className="text-red-300 text-xs">
                                   {validationErrors.map((error, index) => (
                                     <div key={index}>{error}</div>
                                   ))}
@@ -506,10 +496,10 @@ services:
 
                           {/* Success Message */}
                           {localConfig.yamlContent && validationErrors.length === 0 && (
-                            <div className="p-4 bg-green-600/10 border border-green-600/20 rounded-lg">
+                            <div className="p-3 bg-yellow-600/10 border border-yellow-600/20 rounded-md">
                               <div className="flex items-start gap-2">
-                                <Check className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                                <div className="text-green-300 text-sm">
+                                <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                                <div className="text-yellow-300 text-xs">
                                   Configuration is valid and ready to use.
                                 </div>
                               </div>
@@ -527,34 +517,34 @@ services:
 
       case 'cache':
         return (
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <IconComponent className="w-8 h-8 text-zinc-400" />
+              <IconComponent className="w-6 h-6 text-zinc-400" />
               <div>
-                <h3 className="text-2xl font-semibold text-zinc-100">{currentSection.name}</h3>
-                <p className="text-zinc-400 mt-1">{currentSection.description}</p>
+                <h3 className="text-lg font-semibold text-zinc-100">{currentSection.name}</h3>
+                <p className="text-sm text-zinc-400 mt-1">{currentSection.description}</p>
               </div>
             </div>
-            <div className="border border-zinc-800/50 rounded-xl p-8 bg-zinc-900/30">
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 rounded-xl bg-red-600/10 border border-red-600/20">
-                    <Trash2 className="w-6 h-6 text-red-400" />
+            <div className="glass-luxury rounded-lg p-5">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 rounded-lg bg-red-600/10 border border-red-600/20">
+                    <Trash2 className="w-4 h-4 text-red-400" />
                   </div>
                   <div className="flex-1">
-                    <h4 className="text-lg font-medium text-zinc-100 mb-2">Clear Application Cache</h4>
-                    <p className="text-zinc-400 text-sm mb-4">
+                    <h4 className="text-base font-medium text-zinc-100 mb-1">Clear Application Cache</h4>
+                    <p className="text-xs text-zinc-400 mb-3">
                       This will remove all cached service data and force a fresh reload of your configuration. 
                       The application will restart and fetch the latest service definitions.
                     </p>
-                    <p className="text-amber-400 text-sm mb-6 font-medium">
+                    <p className="text-amber-400 text-xs mb-4 font-medium">
                       ⚠️ This action will refresh the entire page and reload all services.
                     </p>
                     <button
                       onClick={handleClearCache}
-                      className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors duration-200 font-medium"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md transition-colors duration-200 font-medium text-xs"
                     >
-                      <Trash2 className="w-4 h-4" />
+                      <Trash2 className="w-3.5 h-3.5" />
                       Clear Cache & Refresh
                     </button>
                   </div>
@@ -571,10 +561,10 @@ services:
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="Settings">
-      <div className="flex h-[600px]">
+      <div className="flex h-[500px]">
         {/* Left Sidebar Navigation */}
-        <div className="w-64 border-r border-zinc-800/50 pr-6">
-          <nav className="space-y-2">
+        <div className="w-48 border-r border-zinc-800/30 pr-4">
+          <nav className="space-y-1">
             {sections.map((section) => {
               const IconComponent = section.icon;
               const isActive = activeSection === section.id;
@@ -583,13 +573,13 @@ services:
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 ${
+                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm ${
                     isActive
-                      ? 'bg-zinc-800/60 text-zinc-100 border border-zinc-700/50'
+                      ? 'bg-zinc-800/60 text-zinc-100 border border-yellow-500/30'
                       : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
                   }`}
                 >
-                  <IconComponent className={`w-5 h-5 ${isActive ? 'text-zinc-300' : 'text-zinc-500'}`} />
+                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-yellow-400' : 'text-zinc-500'}`} />
                   <span className="font-medium">{section.name}</span>
                 </button>
               );
@@ -598,7 +588,7 @@ services:
         </div>
 
         {/* Main Content Area */}
-        <div className="flex-1 pl-6 overflow-y-auto">
+        <div className="flex-1 pl-4 overflow-y-auto">
           {renderSectionContent()}
         </div>
       </div>
