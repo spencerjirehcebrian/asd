@@ -7,7 +7,7 @@ import {
   findServiceIndex 
 } from '../utils/navigationUtils';
 
-export const useKeyboardSearch = (services: Service[], disabled?: boolean): UseKeyboardSearchResult => {
+export const useKeyboardSearch = (services: Service[], disabled?: boolean, onSpecialServiceNavigate?: (serviceId: string) => void): UseKeyboardSearchResult => { // eslint-disable-line no-unused-vars
   const [searchState, setSearchState] = useState<SearchState>({
     searchTerm: '',
     filteredServices: services,
@@ -67,15 +67,31 @@ export const useKeyboardSearch = (services: Service[], disabled?: boolean): UseK
 
   const navigateToFocusedService = useCallback(() => {
     if (searchState.focusedService) {
-      window.open(searchState.focusedService.url, '_blank', 'noopener,noreferrer');
+      // Handle special services (like settings)
+      if (searchState.focusedService.id === '__settings__' && onSpecialServiceNavigate) {
+        onSpecialServiceNavigate(searchState.focusedService.id);
+        return;
+      }
+      
+      // Handle regular services with URLs
+      if (searchState.focusedService.url && searchState.focusedService.url.trim() !== '') {
+        window.open(searchState.focusedService.url, '_blank', 'noopener,noreferrer');
+      }
     }
-  }, [searchState.focusedService]);
+  }, [searchState.focusedService, onSpecialServiceNavigate]);
 
   const navigateToFirstMatch = useCallback(() => {
     if (searchState.filteredServices.length === 1) {
       // Single match: navigate to the service
       const firstMatch = searchState.filteredServices[0];
-      window.open(firstMatch.url, '_blank', 'noopener,noreferrer');
+      
+      // Handle special services (like settings)
+      if (firstMatch.id === '__settings__' && onSpecialServiceNavigate) {
+        onSpecialServiceNavigate(firstMatch.id);
+      } else if (firstMatch.url && firstMatch.url.trim() !== '') {
+        // Handle regular services with URLs
+        window.open(firstMatch.url, '_blank', 'noopener,noreferrer');
+      }
       
       // Reset search after navigation
       setSearchState({
@@ -107,7 +123,7 @@ export const useKeyboardSearch = (services: Service[], disabled?: boolean): UseK
       
       setPulseTimeoutId(newPulseTimeoutId);
     }
-  }, [searchState.filteredServices, services, pulseTimeoutId]);
+  }, [searchState.filteredServices, services, pulseTimeoutId, onSpecialServiceNavigate]);
 
   const handleKeyPress = useCallback((event: KeyboardEvent) => {
     // Early return if keyboard shortcuts are disabled (e.g., when modals are open)

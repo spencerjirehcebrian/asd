@@ -12,7 +12,6 @@ const AppContent: React.FC = () => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const { services, title, loading, error } = useServices();
   const { isAnyModalOpen } = useModalContext();
-  const { searchState } = useKeyboardSearch(services, isAnyModalOpen);
 
   const handleSettingsClick = () => {
     setIsSettingsModalOpen(true);
@@ -21,6 +20,14 @@ const AppContent: React.FC = () => {
   const handleCloseSettingsModal = () => {
     setIsSettingsModalOpen(false);
   };
+
+  const handleSpecialServiceNavigate = (serviceId: string) => {
+    if (serviceId === '__settings__') {
+      handleSettingsClick();
+    }
+  };
+
+  const { searchState } = useKeyboardSearch(services, isAnyModalOpen, handleSpecialServiceNavigate);
 
   if (loading) {
     return (
