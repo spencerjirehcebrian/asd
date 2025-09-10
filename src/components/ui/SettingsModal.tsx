@@ -179,6 +179,64 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setTimeout(() => setIsSaving(false), 500); // Brief loading state
   };
 
+  // Handle keyboard events in inline YAML editor
+  const handleYamlKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const textarea = e.currentTarget;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      
+      if (e.shiftKey) {
+        // Shift+Tab: Remove indentation
+        const lines = localConfig.yamlContent.split('\n');
+        const startLine = localConfig.yamlContent.substring(0, start).split('\n').length - 1;
+        const endLine = localConfig.yamlContent.substring(0, end).split('\n').length - 1;
+        
+        let newContent = '';
+        let cursorOffset = 0;
+        
+        for (let i = 0; i < lines.length; i++) {
+          if (i >= startLine && i <= endLine) {
+            // Remove one tab or up to 2 spaces at the beginning of the line
+            if (lines[i].startsWith('\t')) {
+              lines[i] = lines[i].substring(1);
+              if (i === startLine) cursorOffset = -1;
+            } else if (lines[i].startsWith('  ')) {
+              lines[i] = lines[i].substring(2);
+              if (i === startLine) cursorOffset = -2;
+            } else if (lines[i].startsWith(' ')) {
+              lines[i] = lines[i].substring(1);
+              if (i === startLine) cursorOffset = -1;
+            }
+          }
+          newContent += lines[i] + (i < lines.length - 1 ? '\n' : '');
+        }
+        
+        handleLocalConfigChange(newContent);
+        
+        // Restore cursor position
+        setTimeout(() => {
+          const newPosition = Math.max(0, start + cursorOffset);
+          textarea.selectionStart = textarea.selectionEnd = newPosition;
+        }, 0);
+      } else {
+        // Regular Tab: Add indentation
+        const newContent = localConfig.yamlContent.substring(0, start) + '\t' + localConfig.yamlContent.substring(end);
+        handleLocalConfigChange(newContent);
+        
+        // Restore cursor position after tab
+        setTimeout(() => {
+          textarea.selectionStart = textarea.selectionEnd = start + 1;
+        }, 0);
+      }
+    } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+      // Allow arrow keys to work normally in textarea, prevent global keyboard shortcuts
+      e.stopPropagation();
+    }
+  }, [localConfig.yamlContent]);
+
   const handleOpenYamlEditor = () => {
     setIsYamlEditorOpen(true);
   };
@@ -504,6 +562,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                             <textarea
                               value={localConfig.yamlContent}
                               onChange={(e) => handleLocalConfigChange(e.target.value)}
+                              onKeyDown={handleYamlKeyDown}
                               placeholder={`title: "My Services Dashboard"
 services:
   - id: "example"
