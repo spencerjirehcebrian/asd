@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Settings, Trash2, Check, AlertCircle, Loader2, Github, FolderOpen } from 'lucide-react';
+import { Settings, Trash2, Check, AlertCircle, Loader2, Github, FolderOpen, FileEdit } from 'lucide-react';
 import { Modal } from './Modal';
+import { YamlEditorModal } from './YamlEditorModal';
 import { SettingsModalProps, SettingsSection, SettingsSectionId, ConfigSource, GitHubRepoConfig, LocalConfig } from '../../types';
 import { settingsManager } from '../../utils/settingsManager';
 
@@ -25,6 +26,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   const [connectionStatus, setConnectionStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isYamlEditorOpen, setIsYamlEditorOpen] = useState(false);
 
   // Define sections configuration (memoized to prevent dependency issues)
   const sections: SettingsSection[] = useMemo(() => [
@@ -140,6 +142,22 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setIsSaving(true);
     settingsManager.updateLocalConfig(localConfig.yamlContent);
     setTimeout(() => setIsSaving(false), 500); // Brief loading state
+  };
+
+  const handleOpenYamlEditor = () => {
+    setIsYamlEditorOpen(true);
+  };
+
+  const handleCloseYamlEditor = () => {
+    setIsYamlEditorOpen(false);
+  };
+
+  const handleSaveFromYamlEditor = (content: string) => {
+    handleLocalConfigChange(content);
+    // Auto-save the configuration
+    setIsSaving(true);
+    settingsManager.updateLocalConfig(content);
+    setTimeout(() => setIsSaving(false), 500);
   };
 
   const handleImportFromGitHub = async () => {
@@ -404,8 +422,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                         </p>
 
                         <div className="space-y-3">
-                          {/* Import Button */}
-                          <div className="flex gap-3">
+                          {/* Action Buttons */}
+                          <div className="flex gap-3 flex-wrap">
                             <button
                               onClick={handleImportFromGitHub}
                               disabled={!githubConfig.repository || !githubConfig.filePath}
@@ -414,14 +432,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                               <Github className="w-3.5 h-3.5" />
                               Import from GitHub
                             </button>
-                            {localConfig.lastModified > 0 && (
-                              <span className="text-zinc-400 text-xs flex items-center">
-                                Last modified: {new Date(localConfig.lastModified).toLocaleString()}
-                              </span>
-                            )}
+                            
+                            <button
+                              onClick={handleOpenYamlEditor}
+                              className="inline-flex items-center gap-1.5 px-3 py-2 bg-zinc-700 hover:bg-zinc-600 text-zinc-200 border border-zinc-600/50 rounded-md transition-colors duration-200 font-medium text-xs"
+                            >
+                              <FileEdit className="w-3.5 h-3.5" />
+                              Open Editor
+                            </button>
                           </div>
 
-                          {/* YAML Editor */}
+                          {localConfig.lastModified > 0 && (
+                            <div className="text-zinc-400 text-xs">
+                              Last modified: {new Date(localConfig.lastModified).toLocaleString()}
+                            </div>
+                          )}
+
+                          {/* Inline YAML Editor */}
                           <div>
                             <label className="block text-xs font-medium text-zinc-300 mb-1.5">
                               YAML Configuration
@@ -439,6 +466,18 @@ services:
                               className="w-full h-48 px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50 font-mono text-xs resize-none"
                             />
                           </div>
+
+                          {/* Success Message - moved above Save button */}
+                          {localConfig.yamlContent && validationErrors.length === 0 && (
+                            <div className="p-3 bg-yellow-600/10 border border-yellow-600/20 rounded-md">
+                              <div className="flex items-start gap-2">
+                                <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                                <div className="text-yellow-300 text-xs">
+                                  Configuration is valid and ready to use.
+                                </div>
+                              </div>
+                            </div>
+                          )}
 
                           {/* Save Button */}
                           <div className="flex items-center gap-3">
@@ -489,18 +528,6 @@ services:
                                   {validationErrors.map((error, index) => (
                                     <div key={index}>{error}</div>
                                   ))}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {/* Success Message */}
-                          {localConfig.yamlContent && validationErrors.length === 0 && (
-                            <div className="p-3 bg-yellow-600/10 border border-yellow-600/20 rounded-md">
-                              <div className="flex items-start gap-2">
-                                <Check className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
-                                <div className="text-yellow-300 text-xs">
-                                  Configuration is valid and ready to use.
                                 </div>
                               </div>
                             </div>
@@ -560,38 +587,49 @@ services:
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Settings">
-      <div className="flex h-[500px]">
-        {/* Left Sidebar Navigation */}
-        <div className="w-48 border-r border-zinc-800/30 pr-4">
-          <nav className="space-y-1">
-            {sections.map((section) => {
-              const IconComponent = section.icon;
-              const isActive = activeSection === section.id;
-              
-              return (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm ${
-                    isActive
-                      ? 'bg-zinc-800/60 text-zinc-100 border border-yellow-500/30'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
-                  }`}
-                >
-                  <IconComponent className={`w-4 h-4 ${isActive ? 'text-yellow-400' : 'text-zinc-500'}`} />
-                  <span className="font-medium">{section.name}</span>
-                </button>
-              );
-            })}
-          </nav>
-        </div>
+    <>
+      <Modal isOpen={isOpen} onClose={onClose} title="Settings">
+        <div className="flex h-[500px]">
+          {/* Left Sidebar Navigation */}
+          <div className="w-48 border-r border-zinc-800/30 pr-4">
+            <nav className="space-y-1">
+              {sections.map((section) => {
+                const IconComponent = section.icon;
+                const isActive = activeSection === section.id;
+                
+                return (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-left transition-all duration-200 text-sm ${
+                      isActive
+                        ? 'bg-zinc-800/60 text-zinc-100 border border-yellow-500/30'
+                        : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/30'
+                    }`}
+                  >
+                    <IconComponent className={`w-4 h-4 ${isActive ? 'text-yellow-400' : 'text-zinc-500'}`} />
+                    <span className="font-medium">{section.name}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          </div>
 
-        {/* Main Content Area */}
-        <div className="flex-1 pl-4 overflow-y-auto">
-          {renderSectionContent()}
+          {/* Main Content Area */}
+          <div className="flex-1 pl-4 overflow-y-auto">
+            {renderSectionContent()}
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+
+      {/* YAML Editor Modal */}
+      <YamlEditorModal
+        isOpen={isYamlEditorOpen}
+        onClose={handleCloseYamlEditor}
+        initialContent={localConfig.yamlContent}
+        onSave={handleSaveFromYamlEditor}
+        title="YAML Configuration Editor"
+      />
+    </>
   );
 };

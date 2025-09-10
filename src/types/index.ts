@@ -112,6 +112,14 @@ export interface SettingsModalProps {
   onClose: () => void;
 }
 
+export interface YamlEditorModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  initialContent: string;
+  onSave: (content: string) => void;
+  title?: string;
+}
+
 // Settings section types
 export type SettingsSectionId = 'configuration' | 'cache';
 
