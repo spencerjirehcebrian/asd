@@ -190,5 +190,21 @@
   .header-instructions {
     @apply text-sm font-normal text-zinc-400;
   }
+
+  /* CodeMirror selection override - last resort */
+  .cm-editor .cm-selectionBackground {
+    background-color: #eab308 !important;
+    opacity: 1 !important;
+  }
+
+  .cm-editor.cm-focused .cm-selectionBackground {
+    background-color: #eab308 !important;
+    opacity: 1 !important;
+  }
+
+  .cm-editor ::selection {
+    background-color: #eab308 !important;
+    color: #000000 !important;
+  }
 }
 

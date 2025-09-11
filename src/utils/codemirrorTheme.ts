@@ -1,6 +1,7 @@
 import { EditorView } from '@codemirror/view';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
+import { Extension } from '@codemirror/state';
 
 // Custom dark theme that matches the app's glassmorphism aesthetic
 // Force refresh: 2025-09-11T00:06:22
@@ -57,14 +58,11 @@ export const glassDarkTheme = EditorView.theme({
   },
   
   '.cm-selectionBackground, ::selection': {
-    backgroundColor: '#eab30880', // yellow-500/50 - increased visibility
-    border: '1px solid #eab308aa', // yellow-500/66 - add border for better definition
+    backgroundColor: '#eab308 !important', // Full opacity yellow for maximum visibility
   },
   
-  '.cm-focused .cm-selectionBackground': {
-    backgroundColor: '#eab308b3', // yellow-500/70 - much more visible when focused
-    border: '1px solid #eab308', // yellow-500 full opacity border
-    boxShadow: '0 0 0 1px #eab30880', // subtle outer glow
+  '.cm-focused .cm-selectionBackground, .cm-focused ::selection': {
+    backgroundColor: '#eab308 !important', // Full opacity yellow when focused
   },
   
   '.cm-cursor, .cm-dropCursor': {
@@ -350,8 +348,43 @@ export const glassDarkHighlighting = HighlightStyle.define([
   { tag: t.special(t.string), color: '#90ee90', fontWeight: '600' }, // Bright green for special strings
 ]);
 
+// High visibility selection extension using a more aggressive approach
+const selectionExtension = EditorView.theme({
+  '&.cm-editor': {
+    // Set CSS variable for selection color
+    '--selection-color': '#eab308',
+  },
+  '& .cm-selectionBackground': {
+    backgroundColor: '#eab308 !important',
+    opacity: '1 !important',
+    mixBlendMode: 'normal !important',
+  },
+  '&.cm-focused .cm-selectionBackground': {
+    backgroundColor: '#eab308 !important',
+    opacity: '1 !important',
+    mixBlendMode: 'normal !important',
+  },
+  '& .cm-content': {
+    // Apply selection styling to the content area
+    userSelect: 'text',
+  },
+  '& .cm-content ::selection': {
+    backgroundColor: '#eab308 !important',
+    color: '#000000 !important',
+  },
+  '& ::selection': {
+    backgroundColor: '#eab308 !important',
+    color: '#000000 !important',
+  },
+  // Target the selection layer specifically
+  '& .cm-selectionLayer > div': {
+    backgroundColor: '#eab308 !important',
+  },
+});
+
 // Combined theme with both visual theme and syntax highlighting
 export const glassThemeExtensions = [
   glassDarkTheme,
-  syntaxHighlighting(glassDarkHighlighting)
+  syntaxHighlighting(glassDarkHighlighting),
+  selectionExtension
 ];
