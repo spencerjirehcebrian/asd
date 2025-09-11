@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import CodeMirror from '@uiw/react-codemirror';
 import { yaml } from '@codemirror/lang-yaml';
+import { EditorView } from '@codemirror/view';
 import { glassThemeExtensions } from '../../utils/codemirrorTheme';
 import {
   Settings,
@@ -183,7 +184,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
   };
 
   // CodeMirror extensions for inline editor with syntax highlighting
-  const inlineExtensions = [yaml(), ...glassThemeExtensions];
+  const inlineExtensions = [yaml(), ...glassThemeExtensions, EditorView.lineWrapping];
 
   const handleOpenYamlEditor = () => {
     setIsYamlEditorOpen(true);
@@ -530,12 +531,12 @@ services:
                                   autocompletion: true,
                                   highlightSelectionMatches: false,
                                 }}
-                                height="100%"
-                                maxHeight="192px"
+                                height="192px"
                                 style={{
                                   height: '192px',
-                                  maxHeight: '192px',
-                                  overflow: 'auto',
+                                  width: '100%',
+                                  maxWidth: '100%',
+                                  overflow: 'hidden',
                                 }}
                               />
                             </div>

@@ -39,6 +39,13 @@ export const glassDarkTheme = EditorView.theme({
   '.cm-line': {
     padding: '0 2px',
     lineHeight: '1.5',
+    wordBreak: 'break-word',
+  },
+
+  // Wrapped line styling for better readability
+  '.cm-lineWrapping': {
+    whiteSpace: 'pre-wrap',
+    wordBreak: 'break-word',
   },
   
   '.cm-activeLine': {
@@ -50,11 +57,14 @@ export const glassDarkTheme = EditorView.theme({
   },
   
   '.cm-selectionBackground, ::selection': {
-    backgroundColor: '#eab30840', // yellow-500/25
+    backgroundColor: '#eab30880', // yellow-500/50 - increased visibility
+    border: '1px solid #eab308aa', // yellow-500/66 - add border for better definition
   },
   
   '.cm-focused .cm-selectionBackground': {
-    backgroundColor: '#eab30860', // yellow-500/37.5
+    backgroundColor: '#eab308b3', // yellow-500/70 - much more visible when focused
+    border: '1px solid #eab308', // yellow-500 full opacity border
+    boxShadow: '0 0 0 1px #eab30880', // subtle outer glow
   },
   
   '.cm-cursor, .cm-dropCursor': {
