@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Check, AlertCircle, X, FileEdit, Save } from 'lucide-react';
+import CodeMirror from '@uiw/react-codemirror';
+import { yaml } from '@codemirror/lang-yaml';
 import { Modal } from './Modal';
 import { YamlEditorModalProps, SettingsValidationResult } from '../../types';
 import { settingsManager } from '../../utils/settingsManager';
 import { useModalContext } from '../../contexts/ModalContext';
+import { glassThemeExtensions } from '../../utils/codemirrorTheme';
 
 export const YamlEditorModal: React.FC<YamlEditorModalProps> = ({ 
   isOpen, 
@@ -58,63 +61,8 @@ export const YamlEditorModal: React.FC<YamlEditorModalProps> = ({
     }
   }, [initialContent]);
 
-  // Handle keyboard events in textarea
-  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      
-      if (e.shiftKey) {
-        // Shift+Tab: Remove indentation
-        const lines = content.split('\n');
-        const startLine = content.substring(0, start).split('\n').length - 1;
-        const endLine = content.substring(0, end).split('\n').length - 1;
-        
-        let newContent = '';
-        let cursorOffset = 0;
-        
-        for (let i = 0; i < lines.length; i++) {
-          if (i >= startLine && i <= endLine) {
-            // Remove one tab or up to 2 spaces at the beginning of the line
-            if (lines[i].startsWith('\t')) {
-              lines[i] = lines[i].substring(1);
-              if (i === startLine) cursorOffset = -1;
-            } else if (lines[i].startsWith('  ')) {
-              lines[i] = lines[i].substring(2);
-              if (i === startLine) cursorOffset = -2;
-            } else if (lines[i].startsWith(' ')) {
-              lines[i] = lines[i].substring(1);
-              if (i === startLine) cursorOffset = -1;
-            }
-          }
-          newContent += lines[i] + (i < lines.length - 1 ? '\n' : '');
-        }
-        
-        handleContentChange(newContent);
-        
-        // Restore cursor position
-        setTimeout(() => {
-          const newPosition = Math.max(0, start + cursorOffset);
-          textarea.selectionStart = textarea.selectionEnd = newPosition;
-        }, 0);
-      } else {
-        // Regular Tab: Add indentation
-        const newContent = content.substring(0, start) + '\t' + content.substring(end);
-        handleContentChange(newContent);
-        
-        // Restore cursor position after tab
-        setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1;
-        }, 0);
-      }
-    } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-      // Allow arrow keys to work normally in textarea, prevent global keyboard shortcuts
-      e.stopPropagation();
-    }
-  }, [content, handleContentChange]);
+  // CodeMirror extensions with custom theme and syntax highlighting
+  const extensions = [yaml(), ...glassThemeExtensions];
 
   // Handle save
   const handleSave = useCallback(() => {
@@ -173,14 +121,30 @@ services:
             <label className="block text-xs font-medium text-zinc-300 mb-2">
               YAML Content
             </label>
-            <textarea
-              value={content}
-              onChange={(e) => handleContentChange(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder={exampleContent}
-              className="flex-1 min-h-0 px-3 py-2 bg-zinc-800/50 border border-zinc-700/50 rounded-md text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-yellow-500 focus:border-yellow-500/50 font-mono text-xs resize-none"
-              spellCheck={false}
-            />
+            <div className="flex-1 min-h-0 border border-zinc-700/50 rounded-md overflow-hidden focus-within:ring-1 focus-within:ring-yellow-500 focus-within:border-yellow-500/50">
+              <CodeMirror
+                value={content}
+                onChange={(value) => handleContentChange(value)}
+                extensions={extensions}
+                placeholder={exampleContent}
+                basicSetup={{
+                  lineNumbers: true,
+                  foldGutter: true,
+                  dropCursor: false,
+                  allowMultipleSelections: false,
+                  indentOnInput: true,
+                  bracketMatching: true,
+                  closeBrackets: true,
+                  autocompletion: true,
+                  highlightSelectionMatches: false,
+                }}
+                height="100%"
+                style={{ 
+                  height: '100%',
+                  fontSize: '12px',
+                }}
+              />
+            </div>
           </div>
 
           {/* Validation Messages */}

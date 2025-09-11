@@ -1,4 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import CodeMirror from '@uiw/react-codemirror';
+import { yaml } from '@codemirror/lang-yaml';
+import { glassThemeExtensions } from '../../utils/codemirrorTheme';
 import {
   Settings,
   Trash2,
@@ -179,63 +182,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     setTimeout(() => setIsSaving(false), 500); // Brief loading state
   };
 
-  // Handle keyboard events in inline YAML editor
-  const handleYamlKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    const textarea = e.currentTarget;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      
-      if (e.shiftKey) {
-        // Shift+Tab: Remove indentation
-        const lines = localConfig.yamlContent.split('\n');
-        const startLine = localConfig.yamlContent.substring(0, start).split('\n').length - 1;
-        const endLine = localConfig.yamlContent.substring(0, end).split('\n').length - 1;
-        
-        let newContent = '';
-        let cursorOffset = 0;
-        
-        for (let i = 0; i < lines.length; i++) {
-          if (i >= startLine && i <= endLine) {
-            // Remove one tab or up to 2 spaces at the beginning of the line
-            if (lines[i].startsWith('\t')) {
-              lines[i] = lines[i].substring(1);
-              if (i === startLine) cursorOffset = -1;
-            } else if (lines[i].startsWith('  ')) {
-              lines[i] = lines[i].substring(2);
-              if (i === startLine) cursorOffset = -2;
-            } else if (lines[i].startsWith(' ')) {
-              lines[i] = lines[i].substring(1);
-              if (i === startLine) cursorOffset = -1;
-            }
-          }
-          newContent += lines[i] + (i < lines.length - 1 ? '\n' : '');
-        }
-        
-        handleLocalConfigChange(newContent);
-        
-        // Restore cursor position
-        setTimeout(() => {
-          const newPosition = Math.max(0, start + cursorOffset);
-          textarea.selectionStart = textarea.selectionEnd = newPosition;
-        }, 0);
-      } else {
-        // Regular Tab: Add indentation
-        const newContent = localConfig.yamlContent.substring(0, start) + '\t' + localConfig.yamlContent.substring(end);
-        handleLocalConfigChange(newContent);
-        
-        // Restore cursor position after tab
-        setTimeout(() => {
-          textarea.selectionStart = textarea.selectionEnd = start + 1;
-        }, 0);
-      }
-    } else if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-      // Allow arrow keys to work normally in textarea, prevent global keyboard shortcuts
-      e.stopPropagation();
-    }
-  }, [localConfig.yamlContent]);
+  // CodeMirror extensions for inline editor with syntax highlighting
+  const inlineExtensions = [yaml(), ...glassThemeExtensions];
 
   const handleOpenYamlEditor = () => {
     setIsYamlEditorOpen(true);
@@ -559,19 +507,38 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                             <label className="mb-1.5 block text-xs font-medium text-zinc-300">
                               YAML Configuration
                             </label>
-                            <textarea
-                              value={localConfig.yamlContent}
-                              onChange={(e) => handleLocalConfigChange(e.target.value)}
-                              onKeyDown={handleYamlKeyDown}
-                              placeholder={`title: "My Services Dashboard"
+                            <div className="h-48 w-full rounded-md border border-zinc-700/50 overflow-hidden focus-within:ring-1 focus-within:ring-yellow-500 focus-within:border-yellow-500/50">
+                              <CodeMirror
+                                value={localConfig.yamlContent}
+                                onChange={(value) => handleLocalConfigChange(value)}
+                                extensions={inlineExtensions}
+                                placeholder={`title: "My Services Dashboard"
 services:
   - id: "example"
     name: "Example Service"
     description: "An example service configuration"
     url: "https://example.com"
     category: "tools"`}
-                              className="h-48 w-full resize-none rounded-md border border-zinc-700/50 bg-zinc-800/50 px-3 py-2 font-mono text-xs text-zinc-100 placeholder-zinc-500 focus:border-yellow-500/50 focus:outline-none focus:ring-1 focus:ring-yellow-500"
-                            />
+                                basicSetup={{
+                                  lineNumbers: true,
+                                  foldGutter: false,
+                                  dropCursor: false,
+                                  allowMultipleSelections: false,
+                                  indentOnInput: true,
+                                  bracketMatching: true,
+                                  closeBrackets: true,
+                                  autocompletion: true,
+                                  highlightSelectionMatches: false,
+                                }}
+                                height="100%"
+                                maxHeight="192px"
+                                style={{
+                                  height: '192px',
+                                  maxHeight: '192px',
+                                  overflow: 'auto',
+                                }}
+                              />
+                            </div>
                           </div>
 
                           {/* Success Message - moved above Save button */}
